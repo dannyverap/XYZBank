@@ -432,6 +432,12 @@ components:
           description: El ID del customer propietario de la account
     CustomerRequest:
       type: object
+      required:
+        - nombre
+        - apellido
+        - email
+        - dni
+        - email
       properties:
         id:
           type: string
@@ -498,7 +504,7 @@ components:
       type: object
       properties:
         code:
-          type: string
+          type:  integer
         message:
           type: string
       required:
