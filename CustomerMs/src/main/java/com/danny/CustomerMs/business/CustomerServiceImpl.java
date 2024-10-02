@@ -39,11 +39,12 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerRepository.save(customer);
         return this.customerMapper.getCustomerResponseFromCustomer(customer);
     }
-//Todo validate integer limit and offset
+
+    //Todo validate integer limit and offset
     @Override
     public List<CustomerResponse> getCustomers(int limit, int offset) {
-        offset = (offset >= 0) ? offset: 0;
-        limit= ( limit > 0 ) ? limit: 20;
+        offset = (offset >= 0) ? offset : 0;
+        limit = (limit > 0) ? limit : 20;
         Pageable pageable = PageRequest.of(offset, limit);
         Page<Customer> customers = this.customerRepository.findAll(pageable);
         return customers.stream().map(this.customerMapper::getCustomerResponseFromCustomer).collect(Collectors.toUnmodifiableList());

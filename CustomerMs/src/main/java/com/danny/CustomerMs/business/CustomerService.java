@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CustomerService {
-    CustomerResponse createCustomer (CustomerRequest customer);
+    CustomerResponse createCustomer (CustomerRequest customerRequest);
     List<CustomerResponse> getCustomers(int Limit, int offset);
     CustomerResponse getCustomerDetails(UUID id);
     CustomerResponse updateCustomer(UUID id, CustomerRequest newCustomerData);
