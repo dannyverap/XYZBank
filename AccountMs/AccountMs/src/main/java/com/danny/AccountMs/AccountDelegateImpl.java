@@ -22,31 +22,31 @@ public class AccountDelegateImpl implements AccountApiDelegate {
 
     @Override
     public ResponseEntity<ModelApiResponse> deleteAccount(UUID id) {
-        return AccountApiDelegate.super.deleteAccount(id);
+        return ResponseEntity.ok(this.accountService.deleteAccount(id));
     }
 
     @Override
     public ResponseEntity<ModelApiResponse> depositToAccount(UUID id, Money money) {
-        return AccountApiDelegate.super.depositToAccount(id, money);
+        return ResponseEntity.ok(this.accountService.depositeMoneyToAccount(id,money));
     }
 
     @Override
     public ResponseEntity<AccountResponse> findAccountById(UUID id) {
-        return AccountApiDelegate.super.findAccountById(id);
+        return ResponseEntity.ok(this.accountService.getAccountDetails(id));
     }
 
     @Override
     public ResponseEntity<List<AccountResponse>> findAccounts(Integer offset, Integer limit) {
-        return AccountApiDelegate.super.findAccounts(offset, limit);
+        return ResponseEntity.ok(this.accountService.getAccounts(limit,offset));
     }
 
     @Override
     public ResponseEntity<AccountResponse> updateAccount(UUID id, AccountRequest accountRequest) {
-        return AccountApiDelegate.super.updateAccount(id, accountRequest);
+        return ResponseEntity.ok(this.accountService.updateAccount(id,accountRequest));
     }
 
     @Override
     public ResponseEntity<ModelApiResponse> withdrawFromAccount(UUID id, Money money) {
-        return AccountApiDelegate.super.withdrawFromAccount(id, money);
+        return ResponseEntity.ok(this.accountService.withdrawMoneyFromAccount(id,money));
     }
 }
