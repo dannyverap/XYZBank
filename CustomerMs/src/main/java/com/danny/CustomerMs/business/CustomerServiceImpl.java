@@ -1,12 +1,10 @@
 package com.danny.CustomerMs.business;
 
+import com.danny.CustomerMs.clients.RestAccountClient;
 import com.danny.CustomerMs.exception.BadPetitionException;
 import com.danny.CustomerMs.exception.ConflictException;
 import com.danny.CustomerMs.exception.NotFoundException;
-import com.danny.CustomerMs.model.Customer;
-import com.danny.CustomerMs.model.CustomerRequest;
-import com.danny.CustomerMs.model.CustomerResponse;
-import com.danny.CustomerMs.model.ModelApiResponse;
+import com.danny.CustomerMs.model.*;
 import com.danny.CustomerMs.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,9 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -26,6 +22,8 @@ public class CustomerServiceImpl implements CustomerService {
     CustomerRepository customerRepository;
     @Autowired
     CustomerMapper customerMapper;
+    @Autowired
+    RestAccountClient accountClient;
 
     @Override
     public CustomerResponse createCustomer(CustomerRequest customerRequest) {
@@ -57,44 +55,56 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerResponse updateCustomer(UUID id, CustomerRequest customerRequest) {
-        Optional<Customer> customerToUpdate = this.customerRepository.findById(id);
+        Customer customerToUpdate = this.customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found"));
 
-        if (customerToUpdate.isEmpty()) {
-            throw new NotFoundException("Not found");
+        if (!customerToUpdate.getEmail().equals(customerRequest.getEmail())) {
+            if (this.customerRepository.existsByEmail(customerRequest.getEmail())) {
+                throw new BadPetitionException("Email ya registrado en otro usuario");
+            }
+            customerToUpdate.setEmail(customerRequest.getEmail());
+        }
+        if (!customerToUpdate.getDni().equals(customerRequest.getDni())) {
+            if (this.customerRepository.existsByDni(customerRequest.getDni())) {
+                throw new BadPetitionException("DNI ya registrado en otro usuario");
+            }
+            customerToUpdate.setDni(customerRequest.getDni());
+        }
+        if (!customerToUpdate.getNombre().equals(customerRequest.getNombre())) {
+            customerToUpdate.setNombre(customerRequest.getNombre());
+        }
+        if (!customerToUpdate.getApellido().equals(customerRequest.getApellido())) {
+            customerToUpdate.setApellido(customerRequest.getApellido());
         }
 
-        customerToUpdate.ifPresent(customer -> {
-            if (!customer.getEmail().equals(customerRequest.getEmail())) {
-                if (this.customerRepository.existsByEmail(customerRequest.getEmail())) {
-                    throw new BadPetitionException("Email ya registrado en otro usuario");
-                }
-                customer.setEmail(customerRequest.getEmail());
-            }
-            if (!customer.getDni().equals(customerRequest.getDni())) {
-                if (this.customerRepository.existsByDni(customerRequest.getDni())) {
-                    throw new BadPetitionException("DNI ya registrado en otro usuario");
-                }
-                customer.setDni(customerRequest.getDni());
-            }
-            if (!customer.getNombre().equals(customerRequest.getNombre())) {
-                customer.setNombre(customerRequest.getNombre());
-            }
-            if (!customer.getApellido().equals(customerRequest.getApellido())) {
-                customer.setApellido(customerRequest.getApellido());
-            }
-        });
-        Customer updatedCustomer = this.customerRepository.save(customerToUpdate.get());
+        Customer updatedCustomer = this.customerRepository.save(customerToUpdate);
         return this.customerMapper.getCustomerResponseFromCustomer(updatedCustomer);
     }
 
     @Override
     public ModelApiResponse deleteCustomer(UUID id) {
+
         if (!this.customerRepository.existsById(id)) {
-            throw new NotFoundException("Cliente no existe y ya se encuentra eliminado");
+            throw new NotFoundException("Cliente no existe o ya se encuentra eliminado");
         }
+
+        List<AccountResponse> accounts = this.accountClient.getAccountsByClientId(id);
+
+        if(this.findIfUserHaveActiveAccounts(accounts)){
+            throw new BadPetitionException("Las cuentas bancarias deben tener un saldo igual a 0 para eliminar cliente");
+        };
+
+        this.sendOrderToDeleteAccounts(accounts);
         this.customerRepository.deleteById(id);
         ModelApiResponse response = new ModelApiResponse();
         response.setMessage("Cliente borrado exitosamente");
         return response;
+    }
+
+    private boolean findIfUserHaveActiveAccounts(List<AccountResponse> accounts) {
+        return accounts.stream().anyMatch(account -> account.getSaldo() != 0.0 );
+    }
+
+    private void sendOrderToDeleteAccounts(List<AccountResponse> accounts) {
+        accounts.forEach(account-> this.accountClient.DeleteAccount(account.getId()));
     }
 }
