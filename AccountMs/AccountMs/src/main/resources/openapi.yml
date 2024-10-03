@@ -42,8 +42,8 @@ paths:
       summary: Listar todos los customers
       description: Endpoint que permite obtener una lista de los customers del banco
       parameters:
-        - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/offsetParam'
       responses:
         '200':
           description: Operación exitosa
@@ -161,8 +161,9 @@ paths:
       summary: Listar todas las accounts
       description: Endpoint que permite obtener una lista de accounts del banco
       parameters:
-        - $ref: '#/components/parameters/offsetParam'
         - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/offsetParam'
+        - $ref: '#/components/parameters/clienteIdParam'
       responses:
         '200':
           description: Operación exitosa
@@ -349,6 +350,14 @@ components:
         minimum: 0
         default: 0
       description: Desde cual registro se desea consultar. Por ejemplo para consultar desde el registro 20, se envía offset=20
+    clienteIdParam:
+      in: query
+      name: clienteId
+      description: ID de cliente a buscar
+      required: false
+      schema:
+        type: string
+        format: uuid
     limitParam:
       in: query
       name: limit

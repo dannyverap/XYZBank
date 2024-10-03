@@ -13,7 +13,7 @@ public class AccountMapper {
         Account account = new Account();
         account.setSaldo(accountRequest.getSaldo());
         account.setTipoCuenta(this.mapToEnumModel(accountRequest.getTipoCuenta()));
-        account.setClientId(accountRequest.getClienteId());
+        account.setClienteId(accountRequest.getClienteId());
         account.setNumeroCuenta(account.getNumeroCuenta());
         return account;
     }
@@ -23,7 +23,7 @@ public class AccountMapper {
         accountResponse.setId(account.getId());
         accountResponse.setSaldo(account.getSaldo());
         accountResponse.setTipoCuenta(this.mapToEnumResponse(account.getTipoCuenta()));
-        accountResponse.setClienteId(account.getClientId());
+        accountResponse.setClienteId(account.getClienteId());
         accountResponse.setNumeroCuenta(account.getNumeroCuenta());
         return accountResponse;
     }

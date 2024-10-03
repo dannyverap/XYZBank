@@ -35,7 +35,7 @@ public class CustomerDelegateImpl implements CustomerApiDelegate {
     }
 
     @Override
-    public ResponseEntity<List<CustomerResponse>> findCustomers(Integer offset, Integer limit) {
+    public ResponseEntity<List<CustomerResponse>> findCustomers(Integer limit, Integer offset) {
         return ResponseEntity.ok(this.customerService.getCustomers(limit, offset));
     }
 

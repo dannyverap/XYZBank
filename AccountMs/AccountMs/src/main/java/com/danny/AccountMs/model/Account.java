@@ -21,5 +21,5 @@ public class Account {
     private String numeroCuenta ;
     private Double saldo;
     private TipoCuenta tipoCuenta;
-    private UUID clientId;
+    private UUID clienteId;
 }

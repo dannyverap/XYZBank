@@ -36,8 +36,8 @@ public class AccountDelegateImpl implements AccountApiDelegate {
     }
 
     @Override
-    public ResponseEntity<List<AccountResponse>> findAccounts(Integer offset, Integer limit) {
-        return ResponseEntity.ok(this.accountService.getAccounts(limit,offset));
+    public ResponseEntity<List<AccountResponse>> findAccounts(Integer limit,Integer offset, UUID clienteId ) {
+        return ResponseEntity.ok(this.accountService.getAccounts(limit,offset,clienteId));
     }
 
     @Override
