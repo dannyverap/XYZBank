@@ -33,18 +33,23 @@ public class AccountServiceImpl implements AccountService {
 
         Account account = this.accountMapper.getAccountFromRequest(accountRequest);
         account.setSaldo(0.0);
-        account.setClientId(accountRequest.getClienteId());
-        account.setNumeroCuenta(this.generateUniqueNumeroCuenta(account.getClientId(), account.getTipoCuenta()));
+        account.setClienteId(accountRequest.getClienteId());
+        account.setNumeroCuenta(this.generateUniqueNumeroCuenta(account.getClienteId(), account.getTipoCuenta()));
         this.accountRepository.save(account);
         return this.accountMapper.getAccountResponseFromAccount(account);
     }
 
     @Override
-    public List<AccountResponse> getAccounts(int limit, int offset) {
+    public List<AccountResponse> getAccounts(int limit, int offset, UUID clienteId) {
         offset = Math.max(offset, 0);
         limit = (0 >= limit) ? 20 : limit;
         Pageable pageable = PageRequest.of(offset, limit);
-        Page<Account> accounts = this.accountRepository.findAll(pageable);
+        Page<Account> accounts;
+        if (clienteId != null) {
+            accounts =this.accountRepository.findByClienteId(clienteId,pageable);
+        } else {
+            accounts = this.accountRepository.findAll(pageable);
+        }
         return accounts.stream().map(this.accountMapper::getAccountResponseFromAccount).toList();
     }
 
