@@ -1,5 +1,6 @@
 package com.danny.AccountMs.business;
 
+import com.danny.AccountMs.clients.RestCustomerClient;
 import com.danny.AccountMs.exception.BadPetitionException;
 import com.danny.AccountMs.exception.NotFoundException;
 import com.danny.AccountMs.model.*;
@@ -22,10 +23,14 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     AccountMapper accountMapper;
 
+    @Autowired
+    RestCustomerClient customerClient;
+
     @Override
     public AccountResponse createAccount(AccountRequest accountRequest) {
-        //Validar si usuario existe
-        //luego crear cuenta
+
+        this.customerClient.validateCustomerId(accountRequest.getClienteId());
+
         Account account = this.accountMapper.getAccountFromRequest(accountRequest);
         account.setSaldo(0.0);
         account.setClientId(accountRequest.getClienteId());
@@ -50,7 +55,22 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountResponse updateAccount(UUID id, AccountRequest newAccountData) {
-        return null;
+        Account accountToUpdate = this.accountRepository.findById(id).orElseThrow(() -> new NotFoundException("no encontrado"));
+        Account newAccountDataEntity = this.accountMapper.getAccountFromRequest(newAccountData);
+        if (!accountToUpdate.getNumeroCuenta().equals(newAccountDataEntity.getNumeroCuenta())) {
+            if (this.accountRepository.existsByNumeroCuenta(newAccountDataEntity.getNumeroCuenta())) {
+                throw new BadPetitionException("El numero de cuenta debe ser única");
+            }
+            accountToUpdate.setNumeroCuenta(newAccountData.getNumeroCuenta());
+        }
+        if (!accountToUpdate.getTipoCuenta().equals(newAccountDataEntity.getTipoCuenta())) {
+            accountToUpdate.setTipoCuenta(newAccountDataEntity.getTipoCuenta());
+        }
+        if (!accountToUpdate.getSaldo().equals(newAccountDataEntity.getSaldo())) {
+            accountToUpdate.setSaldo(newAccountDataEntity.getSaldo());
+        }
+        Account updatedAccount = this.accountRepository.save(accountToUpdate);
+        return this.accountMapper.getAccountResponseFromAccount(updatedAccount);
     }
 
     @Override
@@ -60,10 +80,12 @@ public class AccountServiceImpl implements AccountService {
             throw new NotFoundException("Cuenta no existe o ya fue borrada");
         }
         Double actualSaldo = account.get().getSaldo();
-        if (actualSaldo >0 )
+        if (actualSaldo > 0) {
             throw new BadPetitionException("Retire el saldo antes de eliminar su cuenta. Saldo actual: " + actualSaldo);
-        if (actualSaldo > 0 )
+        }
+        if (actualSaldo < 0) {
             throw new BadPetitionException("Pague la deuda antes de eliminar su cuenta. Saldo actual: " + actualSaldo);
+        }
         this.accountRepository.deleteById(id);
         ModelApiResponse response = new ModelApiResponse();
         response.setMessage("Cuenta borrada exitosamente");
@@ -98,12 +120,12 @@ public class AccountServiceImpl implements AccountService {
     private String generateUniqueNumeroCuenta(UUID clientId, TipoCuenta tipoCuenta) {
         String numeroCuenta;
         do {
-            numeroCuenta = this.generateRandomeNumeroCuenta(clientId, tipoCuenta);
+            numeroCuenta = this.generateRandomNumeroCuenta(clientId, tipoCuenta);
         } while (this.accountRepository.existsByNumeroCuenta(numeroCuenta));
         return numeroCuenta;
     }
 
-    private String generateRandomeNumeroCuenta(UUID clientId, TipoCuenta tipoCuenta) {
+    private String generateRandomNumeroCuenta(UUID clientId, TipoCuenta tipoCuenta) {
         Random random = new Random();
         return clientId.toString().substring(0, 4) + tipoCuenta.toString().substring(0, 3) + random.nextInt(1000);
     }
