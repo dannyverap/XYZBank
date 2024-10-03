@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="AccountMs" />
+        <module name="ServiceReg" />
         <module name="CustomerMs" />
       </profile>
     </annotationProcessing>
@@ -16,6 +17,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="AccountMs" options="-parameters" />
       <module name="CustomerMs" options="-parameters" />
+      <module name="ServiceReg" options="-parameters" />
     </option>
   </component>
 </project>
