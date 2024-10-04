@@ -18,7 +18,6 @@ public class CustomerDelegateImpl implements CustomerApiDelegate {
     @Autowired
     CustomerService customerService;
 
-
     @Override
     public ResponseEntity<CustomerResponse> createCustomer(CustomerRequest customerRequest) {
         return ResponseEntity.ok(this.customerService.createCustomer(customerRequest));

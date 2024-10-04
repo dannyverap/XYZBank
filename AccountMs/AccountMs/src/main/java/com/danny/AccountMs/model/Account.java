@@ -18,7 +18,7 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private String numeroCuenta ;
+    private String numeroCuenta;
     private Double saldo;
     private TipoCuenta tipoCuenta;
     private UUID clienteId;

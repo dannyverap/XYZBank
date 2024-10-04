@@ -14,17 +14,16 @@ public class RestCustomerClient {
     String Url = "http://localhost:8081/customer/";
 
     @Bean
-    public RestTemplate restTemplate(){
+    public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 
-    public void validateCustomerId(UUID id){
+    public void validateCustomerId(UUID id) {
         try {
             restTemplate().getForObject(this.Url + id.toString(), CustomerResponse.class);
-        }
-        catch (HttpClientErrorException e ){
+        } catch (HttpClientErrorException e) {
             throw new BadPetitionException("El cliente no fue encontrado en el servicio de cuentas");
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("Error inesperado: " + e.getMessage());
         }
     }

@@ -55,12 +55,15 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountResponse getAccountDetails(UUID id) {
-        return this.accountMapper.getAccountResponseFromAccount(this.accountRepository.findById(id).orElseThrow(() -> new NotFoundException("Cuenta no encontrada")));
+        return this.accountMapper.getAccountResponseFromAccount(this.accountRepository.findById(id)
+                                                                                      .orElseThrow(() -> new NotFoundException(
+                                                                                              "Cuenta no encontrada")));
     }
 
     @Override
     public AccountResponse updateAccount(UUID id, AccountRequest newAccountData) {
-        Account accountToUpdate = this.accountRepository.findById(id).orElseThrow(() -> new NotFoundException("no encontrado"));
+        Account accountToUpdate = this.accountRepository.findById(id)
+                                                        .orElseThrow(() -> new NotFoundException("no encontrado"));
         Account newAccountDataEntity = this.accountMapper.getAccountFromRequest(newAccountData);
         if (!accountToUpdate.getNumeroCuenta().equals(newAccountDataEntity.getNumeroCuenta())) {
             if (this.accountRepository.existsByNumeroCuenta(newAccountDataEntity.getNumeroCuenta())) {
@@ -99,8 +102,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public ModelApiResponse depositeMoneyToAccount(UUID id, Money money) {
-        Account account = this.accountRepository.findById(id).orElseThrow(() -> new NotFoundException("Cuenta no encontrada"));
-        account.setSaldo(account.getSaldo() + money.getDinero());
+        Account account = this.accountRepository.findById(id)
+                                                .orElseThrow(() -> new NotFoundException("Cuenta no encontrada"));
+        account.setSaldo(account.getSaldo() + Math.abs(money.getDinero()));
         this.accountRepository.save(account);
         ModelApiResponse apiResponse = new ModelApiResponse();
         apiResponse.setMessage("Operación exitosa, el nuevo saldo de la cuenta es:" + account.getSaldo());
@@ -109,12 +113,15 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public ModelApiResponse withdrawMoneyFromAccount(UUID id, Money money) {
-        Account account = this.accountRepository.findById(id).orElseThrow(() -> new NotFoundException("Cuenta no encontrada"));
-        double newSaldo = account.getSaldo() - money.getDinero();
-        if (newSaldo < -500)
+        Account account = this.accountRepository.findById(id)
+                                                .orElseThrow(() -> new NotFoundException("Cuenta no encontrada"));
+        double newSaldo = account.getSaldo() - Math.abs(money.getDinero());
+        if (newSaldo < -500) {
             throw new BadPetitionException("No puede retirar esa cantidad, su saldo actual es de :" + account.getSaldo());
-        if (TipoCuenta.AHORRO.equals(account.getTipoCuenta()) && newSaldo < 0)
+        }
+        if (TipoCuenta.AHORRO.equals(account.getTipoCuenta()) && newSaldo < 0) {
             throw new BadPetitionException("Su saldo no puede ser menor a 0 en una cuenta de Ahorro. Saldo actual:" + account.getSaldo());
+        }
         account.setSaldo(newSaldo);
         this.accountRepository.save(account);
         ModelApiResponse apiResponse = new ModelApiResponse();

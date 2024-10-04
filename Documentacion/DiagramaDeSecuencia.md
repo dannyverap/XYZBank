@@ -25,7 +25,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title Crear Cliente
+    title Actualizar Cliente
     autonumber
     actor C as Cajero
     participant MsCliente as MicroServicio Clientes
@@ -44,7 +44,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title Crear Cliente
+    title Listar clientes
     autonumber
     actor C as Cajero
     participant MsCliente as MicroServicio Clientes
@@ -63,7 +63,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title Crear Cliente
+    title Obtener detalles de Cliente
     autonumber
     actor C as Cajero
     participant MsCliente as MicroServicio Clientes
@@ -180,7 +180,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title Obtener detalle de Cuenta
+    title Obtener detalles de Cuenta
     autonumber
     actor C as Cajero
     participant MsCuenta as MicroServicio Cuentas
@@ -269,7 +269,7 @@ sequenceDiagram
         CuentaDb -->> MsCuenta: Confirmación de saldo actualizado
         deactivate CuentaDb
         MsCuenta -->> C: Confirmación: Retiro realizado exitosamente
-    else Saldo en insuficiente: límite -500
+    else Saldo en insuficiente: -500 (corriente) o 0 (ahorro)
         MsCuenta -->> C: Error: Saldo insuficiente
         deactivate MsCuenta
     end

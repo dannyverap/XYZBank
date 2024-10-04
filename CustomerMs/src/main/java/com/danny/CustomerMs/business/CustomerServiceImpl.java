@@ -33,6 +33,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (this.customerRepository.existsByDni(customerRequest.getDni())) {
             throw new ConflictException("DNI ya registrado");
         }
+
         Customer customer = this.customerMapper.getCustomerFromRequest(customerRequest);
         this.customerRepository.save(customer);
         return this.customerMapper.getCustomerResponseFromCustomer(customer);
@@ -50,12 +51,15 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerResponse getCustomerDetails(UUID id) {
-        return this.customerMapper.getCustomerResponseFromCustomer(this.customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Cliente no encontrado")));
+        return this.customerMapper.getCustomerResponseFromCustomer(this.customerRepository.findById(id)
+                                                                                          .orElseThrow(() -> new NotFoundException(
+                                                                                                  "Cliente no encontrado")));
     }
 
     @Override
     public CustomerResponse updateCustomer(UUID id, CustomerRequest customerRequest) {
-        Customer customerToUpdate = this.customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found"));
+        Customer customerToUpdate = this.customerRepository.findById(id)
+                                                           .orElseThrow(() -> new NotFoundException("Not found"));
 
         if (!customerToUpdate.getEmail().equals(customerRequest.getEmail())) {
             if (this.customerRepository.existsByEmail(customerRequest.getEmail())) {
@@ -89,10 +93,10 @@ public class CustomerServiceImpl implements CustomerService {
 
         List<AccountResponse> accounts = this.accountClient.getAccountsByClientId(id);
 
-        if(this.findIfUserHaveActiveAccounts(accounts)){
-            throw new BadPetitionException("Las cuentas bancarias deben tener un saldo igual a 0 para eliminar cliente");
+        if (this.findIfUserHaveActiveAccounts(accounts)) {
+            throw new BadPetitionException("Las cuentas bancarias deben tener un saldo igual a 0 para eliminar " +
+                                                   "cliente");
         }
-
         this.sendOrderToDeleteAccounts(accounts);
         this.customerRepository.deleteById(id);
         ModelApiResponse response = new ModelApiResponse();
@@ -101,10 +105,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     private boolean findIfUserHaveActiveAccounts(List<AccountResponse> accounts) {
-        return accounts.stream().anyMatch(account -> account.getSaldo() != 0.0 );
+        return accounts.stream().anyMatch(account -> account.getSaldo() != 0.0);
     }
 
     private void sendOrderToDeleteAccounts(List<AccountResponse> accounts) {
-        accounts.forEach(account-> this.accountClient.DeleteAccount(account.getId()));
+        accounts.forEach(account -> this.accountClient.DeleteAccount(account.getId()));
     }
 }

@@ -23,8 +23,11 @@ public class RestAccountClient {
 
     public List<AccountResponse> getAccountsByClientId(UUID id) {
         try {
-            return restTemplate().exchange(this.Url + "?clienteId=" + id, HttpMethod.GET, null, new ParameterizedTypeReference<List<AccountResponse>>() {
-            }).getBody();
+            return restTemplate().exchange(this.Url + "?clienteId=" + id,
+                                           HttpMethod.GET,
+                                           null,
+                                           new ParameterizedTypeReference<List<AccountResponse>>() {
+                                           }).getBody();
         } catch (HttpClientErrorException e) {
             throw new BadPetitionException("Error cuentas no encontradas");
         } catch (Exception e) {

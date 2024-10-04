@@ -15,7 +15,8 @@ public class CustomerMapper {
         customer.setEmail(customerRequest.getEmail());
         return customer;
     }
-    public CustomerResponse getCustomerResponseFromCustomer(Customer customer){
+
+    public CustomerResponse getCustomerResponseFromCustomer(Customer customer) {
         CustomerResponse customerResponse = new CustomerResponse();
         customerResponse.setId(customer.getId());
         customerResponse.setNombre(customer.getNombre());
