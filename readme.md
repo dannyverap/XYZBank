@@ -1,76 +1,63 @@
 # XYZ Bank - Danny Vera
 
-Sistema para gestionar transacciones bancarias entre cuentas de clientes. El sistema debe permitir la creación de
-clientes, cuentas, y realizar transacciones entre ellas (retiros y depósitos). Este sistema estará dividido en
-microservicios independientes que se comunicarán entre sí. El proyecto se documentará utilizando OpenAPI y se
-presentarán diagramas de secuencia y diagramas de componentes para ilustrar la arquitectura
+Este sistema gestiona transacciones bancarias entre cuentas de clientes, permitiendo la creación de clientes, cuentas, y realizar transacciones (retiros y depósitos). El proyecto está compuesto por microservicios independientes que se comunican entre sí. La documentación se realiza con OpenAPI y se incluyen diagramas para ilustrar la arquitectura.
 
-# Documentación y diagramas:
+## Documentación y Diagramas
 
 - [Diagrama de Uso](Documentacion%2FDiagramaDeUso.md)
 - [Diagramas de Secuencia](Documentacion%2FDiagramaDeSecuencia.md)
-- [Diagrama de Componente.md](Documentacion%2FDiagramaDeComponente.md)
-- [Documentación OpenApi](Documentacion%2Fswagger.md)
+- [Diagrama de Componentes](Documentacion%2FDiagramaDeComponente.md)
+- [Documentación OpenAPI](Documentacion%2Fswagger.md)
 
-Para ver diagramas de secuencia descargar el siguiente pluggin:
-
+> **Nota**: Para visualizar los diagramas de secuencia, descarga el siguiente plugin:  
 ![img.png](img.png)
 
-# Microservicios
+## Microservicios
 
-- **Gateway** Proporcionar un punto de entrada a nuestro ecosistema de microservicios
+- **Gateway**: Punto de entrada a los microservicios  
+  - URL: [http://localhost:8080/](http://localhost:8080/)
 
-  - Punto de entrada http://localhost:8080/
+- **Registry Service**: Registro y localización de microservicios  
+  - URL: [http://localhost:8761/](http://localhost:8761/)
 
-- **Registry service**: Registrar y localizar micro-servicios
-    - Registry: http://localhost:8761/
+- **CustomerMS**: CRUD de información de clientes  
+  - URL: [http://localhost:8081/customer](http://localhost:8081/customer)
 
-- **CustomerMS:** Crear, leer, actualizar y eliminar (CRUD) información de clientes.
-    - CustomerMS: http://localhost:8081/customer
+- **AccountMS**: CRUD de cuentas bancarias, con funcionalidades de depósitos y retiros  
+  - URL: [http://localhost:8082/account](http://localhost:8082/account)
 
-- **AccountMS:** Crear, leer, actualizar, depositar dinero, retirar dinero y eliminar cuentas bancarias asociadas a
-  clientes
-    - AccountMS: http://localhost:8082/account
+## Base de Datos
 
-# Base de Datos
+- **H2 Database**: Base de datos relacional en memoria para pruebas
 
-- **H2 Base de datos** relacional que funciona como una base de datos en memoria
+## Reglas de Negocio
 
-# Reglas de negocio
+1. **Validaciones de Cliente:**
+   - Cada cliente debe tener un DNI único.
+   - No se puede eliminar un cliente si tiene cuentas activas.
 
-1. Validaciones de Cliente:
+2. **Validaciones de Cuentas Bancarias:**
+   - El saldo inicial debe ser mayor a 0.
+   - No se permiten retiros que dejen saldo negativo en cuentas de ahorro.
+   - Las cuentas corrientes permiten un sobregiro de hasta -500.
 
-- Cada cliente debe tener un DNI único.
-- No se permite eliminar un cliente si tiene cuentas activas.
+## Instrucciones
 
-2. Validaciones de Cuentas Bancarias:
+1. Levantar los servicios: Registry, Gateway, AccountMS y CustomerMS.
+   - AccountMS: [http://localhost:8080/account](http://localhost:8080/account)
+   - CustomerMS: [http://localhost:8080/customer](http://localhost:8080/customer)
+   - Eureka: [http://localhost:8080/eureka/main](http://localhost:8080/eureka/main)
 
-- El saldo inicial de una cuenta debe ser mayor a 0.
-- No se puede realizar un retiro que deje el saldo en negativo para cuentas de ahorro.
-- Las cuentas corrientes pueden tener un sobregiro de hasta -500.
+2. Importar las [colecciones](Documentacion%2FNTT%20DATA%20BANK.postman_collection.json) en Postman.
 
-# Instrucciones
+3. Probar los endpoints.
 
-1. Levantar los servicios Registry, Gateway, AccountMs y CustomerMs:
-
-  - AccountMS ⮕ http://localhost:8080/account
-  - CustomerMS ⮕ http://localhost:8080/customer
-  - Eureka ⮕ http://localhost:8080/eureka/main
-
-
-2. Importar las [colecciones](Documentacion%2FNTT%20DATA%20BANK.postman_collection.json) en Postman
-
-3. Probar los endpoints
-
-> Nota para ver la DB entrar a las siguientes rutas:
-> http://localhost:8080/customer-h2-console
-> http://localhost:8080/account-h2-console
+> **Acceso a la Base de Datos H2**  
+> - Customer DB: [http://localhost:8080/customer-h2-console](http://localhost:8080/customer-h2-console)  
+> - Account DB: [http://localhost:8080/account-h2-console](http://localhost:8080/account-h2-console)  
 > 
-> jdbc:h2:mem:customerdb
-> 
-> jdbc:h2:mem:accountdb
-> 
-> usuario:SA
-> 
-> password: password
-> 
+> **Conexión H2:**  
+> - JDBC URL: `jdbc:h2:mem:customerdb`  
+> - JDBC URL: `jdbc:h2:mem:accountdb`  
+> - Usuario: `SA`  
+> - Contraseña: `password`
