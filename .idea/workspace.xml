@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fb9f407-076d-41dc-a485-e64b801bd6fe" name="Changes" comment="Improve customer service with validations to updateCustomer method">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="6fb9f407-076d-41dc-a485-e64b801bd6fe" name="Changes" comment="Create gateway and properties">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documentacion/SRCDiagramaCasosDeUso/3. Diagrama de componentes.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/Documentacion/SRCDiagramaCasosDeUso/3. Diagrama de componentes.drawio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gateway/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Gateway/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +25,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "dannyverap"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/dannyverap/XYZBank.git",
+    "accountId": "e4939705-d3ed-4fae-a508-4542a0b949b9"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -38,7 +50,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.AccountMs.executor": "Debug",
+    "Application.AccountMs.executor": "Run",
     "Application.CustomerMs.executor": "Run",
     "Application.Gateway.executor": "Run",
     "Application.ServiceReg.executor": "Run",
@@ -64,7 +76,7 @@
       <command value="mvn clean install" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.AccountMs">
+  <component name="RunManager" selected="Application.CustomerMs">
     <configuration name="AccountMs" type="Application" factoryName="Application">
       <option name="ALTERNATIVE_JRE_PATH" value="17" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
@@ -179,7 +191,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728063694339</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Create gateway and properties">
+      <option name="closed" value="true" />
+      <created>1728066111228</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1728066111228</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -202,7 +222,8 @@
     <MESSAGE value="Add validations to customer and account model" />
     <MESSAGE value="Improve account service with new createApiResponse method and apply validations to updateAccount method" />
     <MESSAGE value="Improve customer service with validations to updateCustomer method" />
-    <option name="LAST_COMMIT_MESSAGE" value="Improve customer service with validations to updateCustomer method" />
+    <MESSAGE value="Create gateway and properties" />
+    <option name="LAST_COMMIT_MESSAGE" value="Create gateway and properties" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
