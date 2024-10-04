@@ -27,6 +27,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerResponse createCustomer(CustomerRequest customerRequest) {
+        Customer customer = this.customerMapper.getCustomerFromRequest(customerRequest);
+
         if (this.customerRepository.existsByEmail(customerRequest.getEmail())) {
             throw new ConflictException("Email ya registrado");
         }
@@ -34,12 +36,10 @@ public class CustomerServiceImpl implements CustomerService {
             throw new ConflictException("DNI ya registrado");
         }
 
-        Customer customer = this.customerMapper.getCustomerFromRequest(customerRequest);
         this.customerRepository.save(customer);
         return this.customerMapper.getCustomerResponseFromCustomer(customer);
     }
 
-    //Todo validate integer limit and offset
     @Override
     public List<CustomerResponse> getCustomers(int limit, int offset) {
         offset = Math.max(offset, 0);
@@ -61,22 +61,23 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customerToUpdate = this.customerRepository.findById(id)
                                                            .orElseThrow(() -> new NotFoundException("Not found"));
 
-        if (!customerToUpdate.getEmail().equals(customerRequest.getEmail())) {
+        if (customerRequest.getEmail() != null && !customerToUpdate.getEmail().equals(customerRequest.getEmail())) {
             if (this.customerRepository.existsByEmail(customerRequest.getEmail())) {
                 throw new BadPetitionException("Email ya registrado en otro usuario");
             }
             customerToUpdate.setEmail(customerRequest.getEmail());
         }
-        if (!customerToUpdate.getDni().equals(customerRequest.getDni())) {
+        if (customerRequest.getDni() != null && !customerToUpdate.getDni().equals(customerRequest.getDni())) {
             if (this.customerRepository.existsByDni(customerRequest.getDni())) {
                 throw new BadPetitionException("DNI ya registrado en otro usuario");
             }
             customerToUpdate.setDni(customerRequest.getDni());
         }
-        if (!customerToUpdate.getNombre().equals(customerRequest.getNombre())) {
+        if (customerRequest.getNombre() != null && !customerToUpdate.getNombre().equals(customerRequest.getNombre())) {
             customerToUpdate.setNombre(customerRequest.getNombre());
         }
-        if (!customerToUpdate.getApellido().equals(customerRequest.getApellido())) {
+        if (customerRequest.getApellido() != null && !customerToUpdate.getApellido()
+                                                                      .equals(customerRequest.getApellido())) {
             customerToUpdate.setApellido(customerRequest.getApellido());
         }
 
