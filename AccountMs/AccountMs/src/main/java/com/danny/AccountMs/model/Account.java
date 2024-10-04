@@ -1,5 +1,6 @@
 package com.danny.AccountMs.model;
 
+import com.danny.AccountMs.exception.BadPetitionException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,4 +23,11 @@ public class Account {
     private Double saldo;
     private TipoCuenta tipoCuenta;
     private UUID clienteId;
+
+    public void setClienteId(UUID clienteId) {
+        if (clienteId == null) {
+            throw new BadPetitionException("Proporcione un clienteId");
+        }
+        this.clienteId = clienteId;
+    }
 }
