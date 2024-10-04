@@ -4,11 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fb9f407-076d-41dc-a485-e64b801bd6fe" name="Changes" comment="Update Diagrama de componentes and readme" />
+    <list default="true" id="6fb9f407-076d-41dc-a485-e64b801bd6fe" name="Changes" comment="Update diagrama de componentes">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExportToHTMLSettings">
+    <option name="printScope" value="1" />
+    <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/OneDrive - NTT DATA EMEAL/Escritorio" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -20,18 +26,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "dannyverap"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;dannyverap&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/dannyverap/XYZBank.git",
-    "accountId": "e4939705-d3ed-4fae-a508-4542a0b949b9"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/dannyverap/XYZBank.git&quot;,
+    &quot;accountId&quot;: &quot;e4939705-d3ed-4fae-a508-4542a0b949b9&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -56,7 +62,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/dverapal/Downloads/Proyecto/Gateway",
+    "last_opened_file_path": "C:/Users/dverapal/OneDrive - NTT DATA EMEAL/Escritorio",
     "settings.editor.selected.configurable": "preferences.sourceCode.Java",
     "settings.editor.splitter.proportion": "0.3058104"
   }
@@ -210,7 +216,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728071966651</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Update diagrama de componentes">
+      <option name="closed" value="true" />
+      <created>1728072358340</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1728072358340</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -236,7 +250,8 @@
     <MESSAGE value="Create gateway and properties" />
     <MESSAGE value="Update gateway to show h2 consoles" />
     <MESSAGE value="Update Diagrama de componentes and readme" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update Diagrama de componentes and readme" />
+    <MESSAGE value="Update diagrama de componentes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update diagrama de componentes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

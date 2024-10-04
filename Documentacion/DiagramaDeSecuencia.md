@@ -155,6 +155,38 @@ sequenceDiagram
     deactivate MsCuenta
     end
 ```
+### Actualizar cuenta
+```mermaid
+sequenceDiagram
+    title Actualizar cuenta
+    autonumber
+    actor C as Cajero
+    participant MsCuenta as MicroServicio Cuentas
+    participant MsCliente as MicroServicio Clientes
+    participant ClienteDb as Base de Datos de Clientes
+    participant CuentaDb as Base de Datos de Cuentas
+
+    C ->> MsCuenta: Solicitud para crear cuenta
+    activate MsCuenta
+    MsCuenta ->> MsCliente: Revisar si es cliente
+    activate MsCliente
+    MsCliente ->> ClienteDb: Buscar cliente en base de datos
+    activate ClienteDb
+    ClienteDb -->> MsCliente: Cliente encontrado (o no)
+    deactivate ClienteDb
+    MsCliente -->> MsCuenta: Respuesta cliente encontrado (o no)
+    deactivate MsCliente
+    alt Cliente
+    MsCuenta ->> CuentaDb: Validar y actualizar cuenta
+    activate CuentaDb
+    CuentaDb -->> MsCuenta: Confirmación
+    deactivate CuentaDb
+    MsCuenta -->> C : Respuesta de éxito
+    else Persona no es cliente
+    MsCuenta -->> C: Error: No es cliente
+    deactivate MsCuenta
+    end
+```
 
 ### Listar cuentas
 
