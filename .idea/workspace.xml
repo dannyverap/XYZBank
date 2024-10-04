@@ -4,16 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fb9f407-076d-41dc-a485-e64b801bd6fe" name="Changes" comment="Apply code style">
+    <list default="true" id="6fb9f407-076d-41dc-a485-e64b801bd6fe" name="Changes" comment="Improve customer service with validations to updateCustomer method">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AccountMs/AccountMs/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AccountMs/AccountMs/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/business/AccountMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/business/AccountMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/business/AccountServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/business/AccountServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/model/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/model/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CustomerMs/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/CustomerMs/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CustomerMs/src/main/java/com/danny/CustomerMs/business/CustomerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/CustomerMs/src/main/java/com/danny/CustomerMs/business/CustomerServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CustomerMs/src/main/java/com/danny/CustomerMs/model/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/CustomerMs/src/main/java/com/danny/CustomerMs/model/Customer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,14 +40,16 @@
   "keyToString": {
     "Application.AccountMs.executor": "Debug",
     "Application.CustomerMs.executor": "Run",
+    "Application.Gateway.executor": "Run",
     "Application.ServiceReg.executor": "Run",
+    "Application.ServiceRegApplication.executor": "Run",
     "Maven.AccountMs [clean,install].executor": "Run",
     "Maven.CustomerMs [clean,install].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/dverapal/Downloads/bs-webflux-java17",
+    "last_opened_file_path": "C:/Users/dverapal/Downloads/Proyecto/Gateway",
     "settings.editor.selected.configurable": "preferences.sourceCode.Java",
     "settings.editor.splitter.proportion": "0.3058104"
   }
@@ -86,6 +83,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Gateway" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="17" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="com.danny.gateway.GatewayApplication" />
+      <module name="gateway" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ServiceReg" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.danny.ServiceReg.ServiceRegApplication" />
       <module name="ServiceReg" />
@@ -94,6 +100,7 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.Gateway" />
       <item itemvalue="Application.AccountMs" />
       <item itemvalue="Application.CustomerMs" />
       <item itemvalue="Application.ServiceReg" />
@@ -140,7 +147,39 @@
       <option name="project" value="LOCAL" />
       <updated>1728013909911</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Update dependencies">
+      <option name="closed" value="true" />
+      <created>1728063415336</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1728063415336</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Add validations to customer and account model">
+      <option name="closed" value="true" />
+      <created>1728063508890</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1728063508890</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Improve account service with new createApiResponse method and apply validations to updateAccount method">
+      <option name="closed" value="true" />
+      <created>1728063628598</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1728063628598</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Improve customer service with validations to updateCustomer method">
+      <option name="closed" value="true" />
+      <created>1728063694339</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1728063694339</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -159,7 +198,11 @@
     <MESSAGE value="Add minor changes" />
     <MESSAGE value="Add documentation" />
     <MESSAGE value="Apply code style" />
-    <option name="LAST_COMMIT_MESSAGE" value="Apply code style" />
+    <MESSAGE value="Update dependencies" />
+    <MESSAGE value="Add validations to customer and account model" />
+    <MESSAGE value="Improve account service with new createApiResponse method and apply validations to updateAccount method" />
+    <MESSAGE value="Improve customer service with validations to updateCustomer method" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improve customer service with validations to updateCustomer method" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -171,28 +214,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/business/AccountServiceImpl.java</url>
-          <line>85</line>
-          <option name="timeStamp" value="14" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/business/AccountServiceImpl.java</url>
-          <line>86</line>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/business/AccountServiceImpl.java</url>
           <line>33</line>
           <option name="timeStamp" value="16" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/business/AccountServiceImpl.java</url>
-          <line>67</line>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/business/AccountMapper.java</url>
-          <line>13</line>
-          <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
