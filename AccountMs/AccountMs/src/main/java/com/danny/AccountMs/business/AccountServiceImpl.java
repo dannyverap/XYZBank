@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
@@ -28,13 +27,14 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountResponse createAccount(AccountRequest accountRequest) {
+        Account account = this.accountMapper.getAccountFromRequest(accountRequest);
 
         this.customerClient.validateCustomerId(accountRequest.getClienteId());
 
-        Account account = this.accountMapper.getAccountFromRequest(accountRequest);
         account.setSaldo(Math.max(accountRequest.getSaldo(), 0.0));
         account.setClienteId(accountRequest.getClienteId());
         account.setNumeroCuenta(this.generateUniqueNumeroCuenta(account.getClienteId(), account.getTipoCuenta()));
+
         this.accountRepository.save(account);
         return this.accountMapper.getAccountResponseFromAccount(account);
     }
@@ -43,8 +43,10 @@ public class AccountServiceImpl implements AccountService {
     public List<AccountResponse> getAccounts(int limit, int offset, UUID clienteId) {
         offset = Math.max(offset, 0);
         limit = (0 >= limit) ? 20 : limit;
+
         Pageable pageable = PageRequest.of(offset, limit);
         Page<Account> accounts;
+
         if (clienteId != null) {
             accounts = this.accountRepository.findByClienteId(clienteId, pageable);
         } else {
@@ -62,19 +64,27 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountResponse updateAccount(UUID id, AccountRequest newAccountData) {
+
+        Account newAccountDataEntity = this.accountMapper.getAccountFromRequest(newAccountData);
+
         Account accountToUpdate = this.accountRepository.findById(id)
                                                         .orElseThrow(() -> new NotFoundException("no encontrado"));
-        Account newAccountDataEntity = this.accountMapper.getAccountFromRequest(newAccountData);
-        if (!accountToUpdate.getNumeroCuenta().equals(newAccountDataEntity.getNumeroCuenta())) {
+
+        if (newAccountDataEntity.getNumeroCuenta() != null && !accountToUpdate.getNumeroCuenta()
+                                                                              .equals(newAccountDataEntity.getNumeroCuenta())) {
             if (this.accountRepository.existsByNumeroCuenta(newAccountDataEntity.getNumeroCuenta())) {
                 throw new BadPetitionException("El numero de cuenta debe ser única");
             }
-            accountToUpdate.setNumeroCuenta(newAccountData.getNumeroCuenta());
+            accountToUpdate.setNumeroCuenta(newAccountDataEntity.getNumeroCuenta());
         }
-        if (!accountToUpdate.getTipoCuenta().equals(newAccountDataEntity.getTipoCuenta())) {
+
+        if (newAccountDataEntity.getTipoCuenta() != null && !accountToUpdate.getTipoCuenta()
+                                                                            .equals(newAccountDataEntity.getTipoCuenta())) {
             accountToUpdate.setTipoCuenta(newAccountDataEntity.getTipoCuenta());
         }
-        if (!accountToUpdate.getSaldo().equals(newAccountDataEntity.getSaldo())) {
+
+        if (newAccountDataEntity.getSaldo() != null && !accountToUpdate.getSaldo()
+                                                                       .equals(newAccountDataEntity.getSaldo())) {
             accountToUpdate.setSaldo(newAccountDataEntity.getSaldo());
         }
         Account updatedAccount = this.accountRepository.save(accountToUpdate);
@@ -83,32 +93,32 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public ModelApiResponse deleteAccount(UUID id) {
-        Optional<Account> account = this.accountRepository.findById(id);
-        if (account.isEmpty()) {
-            throw new NotFoundException("Cuenta no existe o ya fue borrada");
-        }
-        Double actualSaldo = account.get().getSaldo();
+
+        Account account = this.accountRepository.findById(id)
+                                                .orElseThrow(() -> new NotFoundException(
+                                                        "Cuenta no existe o ya fue borrada"));
+
+        Double actualSaldo = account.getSaldo();
         if (actualSaldo > 0) {
             throw new BadPetitionException("Retire el saldo antes de eliminar su cuenta. Saldo actual: " + actualSaldo);
         }
+
         if (actualSaldo < 0) {
             throw new BadPetitionException("Pague la deuda antes de eliminar su cuenta. Saldo actual: " + actualSaldo);
         }
+
         this.accountRepository.deleteById(id);
-        ModelApiResponse response = new ModelApiResponse();
-        response.setMessage("Cuenta borrada exitosamente");
-        return response;
+        return this.createApiResponse("Cuenta borrada exitosamente");
     }
 
     @Override
     public ModelApiResponse depositeMoneyToAccount(UUID id, Money money) {
         Account account = this.accountRepository.findById(id)
                                                 .orElseThrow(() -> new NotFoundException("Cuenta no encontrada"));
+
         account.setSaldo(account.getSaldo() + Math.abs(money.getDinero()));
         this.accountRepository.save(account);
-        ModelApiResponse apiResponse = new ModelApiResponse();
-        apiResponse.setMessage("Operación exitosa, el nuevo saldo de la cuenta es:" + account.getSaldo());
-        return apiResponse;
+        return this.createApiResponse("Operación exitosa, el nuevo saldo de la cuenta es:" + account.getSaldo());
     }
 
     @Override
@@ -119,13 +129,19 @@ public class AccountServiceImpl implements AccountService {
         if (newSaldo < -500) {
             throw new BadPetitionException("No puede retirar esa cantidad, su saldo actual es de :" + account.getSaldo());
         }
+
         if (TipoCuenta.AHORRO.equals(account.getTipoCuenta()) && newSaldo < 0) {
             throw new BadPetitionException("Su saldo no puede ser menor a 0 en una cuenta de Ahorro. Saldo actual:" + account.getSaldo());
         }
+
         account.setSaldo(newSaldo);
         this.accountRepository.save(account);
+        return createApiResponse("Operación exitosa, el nuevo saldo de la cuenta es: \" + account.getSaldo()");
+    }
+
+    private ModelApiResponse createApiResponse(String message) {
         ModelApiResponse apiResponse = new ModelApiResponse();
-        apiResponse.setMessage("Operación exitosa, el nuevo saldo de la cuenta es: " + account.getSaldo());
+        apiResponse.setMessage(message);
         return apiResponse;
     }
 
