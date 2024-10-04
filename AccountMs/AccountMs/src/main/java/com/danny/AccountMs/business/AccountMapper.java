@@ -47,5 +47,5 @@ public class AccountMapper {
         }
         throw new BadPetitionException("Tipo de cuenta no valido");
     }
-};
+}
 

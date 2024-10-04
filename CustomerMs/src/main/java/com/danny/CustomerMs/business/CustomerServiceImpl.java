@@ -91,7 +91,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         if(this.findIfUserHaveActiveAccounts(accounts)){
             throw new BadPetitionException("Las cuentas bancarias deben tener un saldo igual a 0 para eliminar cliente");
-        };
+        }
 
         this.sendOrderToDeleteAccounts(accounts);
         this.customerRepository.deleteById(id);

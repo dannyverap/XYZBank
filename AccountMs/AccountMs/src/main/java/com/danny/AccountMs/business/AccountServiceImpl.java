@@ -32,7 +32,7 @@ public class AccountServiceImpl implements AccountService {
         this.customerClient.validateCustomerId(accountRequest.getClienteId());
 
         Account account = this.accountMapper.getAccountFromRequest(accountRequest);
-        account.setSaldo(0.0);
+        account.setSaldo(Math.max(accountRequest.getSaldo(), 0.0));
         account.setClienteId(accountRequest.getClienteId());
         account.setNumeroCuenta(this.generateUniqueNumeroCuenta(account.getClienteId(), account.getTipoCuenta()));
         this.accountRepository.save(account);
@@ -46,7 +46,7 @@ public class AccountServiceImpl implements AccountService {
         Pageable pageable = PageRequest.of(offset, limit);
         Page<Account> accounts;
         if (clienteId != null) {
-            accounts =this.accountRepository.findByClienteId(clienteId,pageable);
+            accounts = this.accountRepository.findByClienteId(clienteId, pageable);
         } else {
             accounts = this.accountRepository.findAll(pageable);
         }
