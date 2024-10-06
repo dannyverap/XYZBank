@@ -320,7 +320,7 @@ paths:
               $ref: '#/components/schemas/TransactionRequest'
             example:
               tipo: Deposito
-              monto: 357
+              Monto: 357
               fecha: 2020-09-21T17:32:28Z
               cuentaOrigen: null
               CuentaDestino: 8832Ahor121230;
@@ -335,9 +335,9 @@ paths:
                 id: 123e4567-e89b-12d3-a456-426655440000
                 tipo: Deposito
                 fecha: 2020-09-21T17:32:28Z
-                monto: 357
+                Monto: 357
                 cuentaOrigen: null
-                cuentaDestino: 8832Ahor121230;
+                CuentaDestino: 8832Ahor121230;
         '400':
           $ref: "#/components/responses/BadPetition"
         "401":
@@ -360,10 +360,10 @@ paths:
               $ref: '#/components/schemas/TransactionRequest'
             example:
               tipo: Retiro
-              monto: 400
+              Monto: 400
               fecha: 2021-09-21T17:38:28Z
               cuentaOrigen: 88790Ahor1200
-              cuentaDestino: null
+              CuentaDestino: null
       responses:
         "200":
           description: Respuesta del retiro.
@@ -374,10 +374,10 @@ paths:
               example:
                 id: 123e4567-e89b-12d3-a456-426655440000
                 tipo: Retiro
-                monto: 400
+                Monto: 400
                 fecha: 2021-09-21T17:38:28Z
                 cuentaOrigen: 88790Ahor1200
-                cuentaDestino: null
+                CuentaDestino: null
 
         '400':
           $ref: "#/components/responses/BadPetition"
@@ -625,7 +625,7 @@ components:
           type: number
           format: double
           example: 400
-          description: monto de la transacción
+          description: Monto de la transacción
         fecha:
           type: string
           format: date
@@ -635,7 +635,7 @@ components:
           type: string
           example: 88790Ahor1200
           description: Numero de cuenta de origen
-        cuentaDestino:
+        CuentaDestino:
           type: string
           example: 3920Ahor1820
           description: Numero de cuenta de destino
@@ -648,31 +648,29 @@ components:
           description: Id de account.
           readOnly: true
           example: 123e4567-e89b-12d3-a456-426655440000
-        tipo:
-          enum:
-            - Deposito
-            - Retiro
-            - Transferencia
-          example: Transferencia
-          description: Tipo de operación realizada.
-        monto:
+        numeroCuenta:
+          type: string
+          description: Numero de account.
+          readOnly: true
+          example: BC1200192008
+        saldo:
           type: number
           format: double
-          example: 400
-          description: Monto de la transacción
-        fecha:
+          example: 0.0
+          default: 0
+          minimum: -500
+          description: Saldo de la account.
+        tipoCuenta:
+          enum:
+            - Ahorro
+            - Corriente
+          example: Ahorro
+          description: Tipo de account puede ser Ahorro o Corriente.
+        clienteId:
           type: string
-          format: date
-          example: 2017-07-21T17:32:28Z
-          description: Fecha de la transacción
-        cuentaOrigen:
-          type: string
-          example: 88790Ahor1200
-          description: Numero de cuenta de origen
-        cuentaDestino:
-          type: string
-          example: 3920Ahor1820
-          description: Numero de cuenta de destino
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426655440000
+          description: El ID del customer propietario de la account
     TransactionResponse:
       type: object
       properties:
@@ -693,7 +691,7 @@ components:
           format: date
           example: 2017-07-21T17:32:28Z
           description: Fecha de la transacción
-        monto:
+        Monto:
           type: number
           format: double
           example: 400
@@ -702,7 +700,7 @@ components:
           type: string
           example: 88790Ahor1200
           description: Numero de cuenta de origen
-        cuentaDestino:
+        CuentaDestino:
           type: string
           example: 3920Ahor1820
           description: Numero de cuenta de destino
