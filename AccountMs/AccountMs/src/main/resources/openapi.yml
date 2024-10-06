@@ -12,6 +12,8 @@ tags:
     description: Gestión de customers
   - name: Account
     description: Gestión de accounts, pagos y retiros
+  - name: Transaction
+    description: Registrar y gestionar el historial de transacciones bancarias de sus clientes
 paths:
   /customer:
     post:
@@ -305,6 +307,135 @@ paths:
           $ref: "#/components/responses/NotFound"
         '422':
           $ref: "#/components/responses/UnprocessableContent"
+  /transaction/deposito:
+    post:
+      operationId: registerDeposit
+      tags:
+        - Transaction
+      summary: Registrar un depósito
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+            example:
+              tipo: Deposito
+              monto: 357
+              fecha: 2020-09-21T17:32:28Z
+              cuentaOrigen: null
+              CuentaDestino: 8832Ahor121230;
+      responses:
+        "200":
+          description: Respuesta del deposito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+              example:
+                id: 123e4567-e89b-12d3-a456-426655440000
+                tipo: Deposito
+                fecha: 2020-09-21T17:32:28Z
+                monto: 357
+                cuentaOrigen: null
+                cuentaDestino: 8832Ahor121230;
+        '400':
+          $ref: "#/components/responses/BadPetition"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        '404':
+          $ref: "#/components/responses/NotFound"
+        '422':
+          $ref: "#/components/responses/UnprocessableContent"
+
+  /transaction/retiro:
+    post:
+      operationId: registerWithdraw
+      tags:
+        - Transaction
+      summary: Registrar un retiro
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+            example:
+              tipo: Retiro
+              monto: 400
+              fecha: 2021-09-21T17:38:28Z
+              cuentaOrigen: 88790Ahor1200
+              cuentaDestino: null
+      responses:
+        "200":
+          description: Respuesta del retiro.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+              example:
+                id: 123e4567-e89b-12d3-a456-426655440000
+                tipo: Retiro
+                monto: 400
+                fecha: 2021-09-21T17:38:28Z
+                cuentaOrigen: 88790Ahor1200
+                cuentaDestino: null
+
+        '400':
+          $ref: "#/components/responses/BadPetition"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        '404':
+          $ref: "#/components/responses/NotFound"
+        '422':
+          $ref: "#/components/responses/UnprocessableContent"
+  /transaction/transferencia:
+    post:
+      operationId: registerTransfer
+      tags:
+        - Transaction
+      summary: Registrar una transferencia
+
+      requestBody:
+        $ref: '#/components/requestBodies/TransactionRequest'
+
+      responses:
+        "200":
+          description: Respuesta de la transferencia.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        '400':
+          $ref: "#/components/responses/BadPetition"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        '404':
+          $ref: "#/components/responses/NotFound"
+        '422':
+          $ref: "#/components/responses/UnprocessableContent"
+  /transaction/historial:
+    get:
+      operationId: getHistorial
+      tags:
+        - Transaction
+      summary: Registrar un depósito
+      responses:
+        "200":
+          description: Account eliminada correctamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransactionResponse'
+        '400':
+          $ref: "#/components/responses/BadPetition"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        '404':
+          $ref: "#/components/responses/NotFound"
+        '422':
+          $ref: "#/components/responses/UnprocessableContent"
+
 components:
   responses:
     BadPetition:
@@ -480,6 +611,34 @@ components:
           format: email
           example: danny@nttdata.com
           description: Correo del customer.
+    TransactionRequest:
+      type: object
+      properties:
+        tipo:
+          enum:
+            - Deposito
+            - Retiro
+            - Transferencia
+          example: Transferencia
+          description: Tipo de operación realizada.
+        monto:
+          type: number
+          format: double
+          example: 400
+          description: monto de la transacción
+        fecha:
+          type: string
+          format: date
+          example: 2017-07-21T17:32:28Z
+          description: Fecha de la transacción
+        cuentaOrigen:
+          type: string
+          example: 88790Ahor1200
+          description: Numero de cuenta de origen
+        cuentaDestino:
+          type: string
+          example: 3920Ahor1820
+          description: Numero de cuenta de destino
     AccountRequest:
       type: object
       properties:
@@ -489,29 +648,64 @@ components:
           description: Id de account.
           readOnly: true
           example: 123e4567-e89b-12d3-a456-426655440000
-        numeroCuenta:
-          type: string
-          description: Numero de account.
-          readOnly: true
-          example: BC1200192008
-        saldo:
+        tipo:
+          enum:
+            - Deposito
+            - Retiro
+            - Transferencia
+          example: Transferencia
+          description: Tipo de operación realizada.
+        monto:
           type: number
           format: double
-          example: 0.0
-          default: 0
-          minimum: -500
-          description: Saldo de la account.
-        tipoCuenta:
-          enum:
-            - Ahorro
-            - Corriente
-          example: Ahorro
-          description: Tipo de account puede ser Ahorro o Corriente.
-        clienteId:
+          example: 400
+          description: Monto de la transacción
+        fecha:
           type: string
-          format: uuid
+          format: date
+          example: 2017-07-21T17:32:28Z
+          description: Fecha de la transacción
+        cuentaOrigen:
+          type: string
+          example: 88790Ahor1200
+          description: Numero de cuenta de origen
+        cuentaDestino:
+          type: string
+          example: 3920Ahor1820
+          description: Numero de cuenta de destino
+    TransactionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id de la transacción
+          readOnly: true
           example: 123e4567-e89b-12d3-a456-426655440000
-          description: El ID del customer propietario de la account
+        tipo:
+          enum:
+            - Deposito
+            - Retiro
+            - Transferencia
+          example: Transferencia
+          description: Tipo de operación realizada.
+        fecha:
+          type: string
+          format: date
+          example: 2017-07-21T17:32:28Z
+          description: Fecha de la transacción
+        monto:
+          type: number
+          format: double
+          example: 400
+          description: Monto de la transacción
+        cuentaOrigen:
+          type: string
+          example: 88790Ahor1200
+          description: Numero de cuenta de origen
+        cuentaDestino:
+          type: string
+          example: 3920Ahor1820
+          description: Numero de cuenta de destino
     Error:
       type: object
       properties:
@@ -531,7 +725,6 @@ components:
           example: 100.50
           default: 0
           description: Cantidad de dinero a retirar o depositar
-
     ModelApiResponse:
       type: object
       properties:
@@ -539,6 +732,12 @@ components:
           type: string
           description: Mensaje de la respuesta
   requestBodies:
+    TransactionRequest:
+      description: JSSON que contiene información de la operación a realizar
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionRequest'
     MoneyRequest:
       description: Un JSON que contiene información del dinero a depositar o retirar
       content:
