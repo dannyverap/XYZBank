@@ -1,6 +1,7 @@
 package com.danny.AccountMs.business;
 
 import com.danny.AccountMs.clients.RestCustomerClient;
+import com.danny.AccountMs.clients.RestTransactionClient;
 import com.danny.AccountMs.exception.BadPetitionException;
 import com.danny.AccountMs.exception.NotFoundException;
 import com.danny.AccountMs.model.*;
@@ -24,6 +25,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     RestCustomerClient customerClient;
+
+    @Autowired
+    RestTransactionClient restTransactionClient;
 
     @Override
     public AccountResponse createAccount(AccountRequest accountRequest) {
@@ -118,7 +122,11 @@ public class AccountServiceImpl implements AccountService {
 
         account.setSaldo(account.getSaldo() + Math.abs(money.getDinero()));
         this.accountRepository.save(account);
-        return this.createApiResponse("Operación exitosa, el nuevo saldo de la cuenta es:" + account.getSaldo());
+        TransactionResponse transactionResponse = this.restTransactionClient.registerDepositTransaction(money,
+                                                                                                        account.getNumeroCuenta());
+
+        return createApiResponse("Operación exitosa, el nuevo saldo de la cuenta es: " + account.getSaldo() + ". " +
+                                         "Transacción registrada con el ID: " + transactionResponse.getId());
     }
 
     @Override
@@ -136,7 +144,10 @@ public class AccountServiceImpl implements AccountService {
 
         account.setSaldo(newSaldo);
         this.accountRepository.save(account);
-        return createApiResponse("Operación exitosa, el nuevo saldo de la cuenta es: \" + account.getSaldo()");
+        TransactionResponse transactionResponse = this.restTransactionClient.registerWithdrawTransaction(money,
+                                                                                                         account.getNumeroCuenta());
+        return createApiResponse("Operación exitosa, el nuevo saldo de la cuenta es: " + account.getSaldo() + ". " +
+                                         "Transacción registrada con el ID: " + transactionResponse.getId());
     }
 
     private ModelApiResponse createApiResponse(String message) {
