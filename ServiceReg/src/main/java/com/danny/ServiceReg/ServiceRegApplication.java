@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
+//TODO: Solve problem with host register as "host.docker.internal:" / "NTT.."
 @SpringBootApplication
 @EnableEurekaServer
 public class ServiceRegApplication {
