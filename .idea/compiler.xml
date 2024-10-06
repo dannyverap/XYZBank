@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="AccountMs" />
+        <module name="TransactionMs" />
         <module name="ServiceReg" />
         <module name="CustomerMs" />
         <module name="gateway" />
@@ -19,6 +20,7 @@
       <module name="AccountMs" options="-parameters" />
       <module name="CustomerMs" options="-parameters" />
       <module name="ServiceReg" options="-parameters" />
+      <module name="TransactionMs" options="-parameters" />
       <module name="gateway" options="-parameters" />
     </option>
   </component>
