@@ -46,7 +46,7 @@ Este sistema gestiona transacciones bancarias entre cuentas de clientes, permiti
 
 ## Instrucciones
 
-1. Levantar los servicios: Registry, Gateway, AccountMS y CustomerMS.
+1. Levantar los servicios: ***Registry, Gateway, TransactionMs, AccountMS y CustomerMS***.
    - AccountMS: [http://localhost:8080/account](http://localhost:8080/account)
    - CustomerMS: [http://localhost:8080/customer](http://localhost:8080/customer)
    - TransactionMS: [http://localhost:8080/customer](http://localhost:8080/transaction)
