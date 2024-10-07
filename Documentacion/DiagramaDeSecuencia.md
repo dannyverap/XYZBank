@@ -413,7 +413,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title Registrar un transferencia
+    title Obtener historial de transacciones
     autonumber
     participant MsCliente as MicroServicio Clientes
     participant MsTransaction as MicroServicio Transacciones
