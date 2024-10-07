@@ -329,7 +329,7 @@ sequenceDiagram
     participant MsTransaction as Microservicio Transacciones
     C ->> MsCuenta: Solicitud para hacer transferencia
     activate MsCuenta
-    MsCuenta ->> CuentaDb:  Solicitar información de las cuentas
+    MsCuenta ->> CuentaDb: Solicitar información de las cuentas
     activate CuentaDb
     CuentaDb -->> MsCuenta: Enviar información de cuentas
     deactivate CuentaDb
@@ -349,3 +349,81 @@ sequenceDiagram
         deactivate MsCuenta
     end
  ```
+
+## Transacciones
+
+### Registrar un depósito
+
+```mermaid
+sequenceDiagram
+    title Registrar un depósito
+    autonumber
+    participant MsCliente as MicroServicio Clientes
+    participant MsTransaction as MicroServicio Transacciones
+    participant TransactionDb as Base de Datos NoSQL de transacciones
+    activate MsTransaction
+    MsCliente ->> MsTransaction: Solicitud para registrar depósito
+    activate TransactionDb
+    MsTransaction ->> TransactionDb: Registrar depósito
+    TransactionDb -->> MsTransaction: Confirmación de almacenamiento
+    deactivate TransactionDb
+    MsTransaction -->> MsCliente: Respuesta de éxito o error
+    deactivate MsTransaction
+```
+
+### Registrar un retiro
+
+```mermaid
+sequenceDiagram
+    title Registrar un retiro
+    autonumber
+    participant MsCliente as MicroServicio Clientes
+    participant MsTransaction as MicroServicio Transacciones
+    participant TransactionDb as Base de Datos NoSQL de transacciones
+    activate MsTransaction
+    MsCliente ->> MsTransaction: Solicitud para registrar retiro
+    activate TransactionDb
+    MsTransaction ->> TransactionDb: Registrar retiro
+    TransactionDb -->> MsTransaction: Confirmación de almacenamiento
+    deactivate TransactionDb
+    MsTransaction -->> MsCliente: Respuesta de éxito o error
+    deactivate MsTransaction
+```
+
+### Registrar una transferencia
+
+```mermaid
+sequenceDiagram
+    title Registrar un transferencia
+    autonumber
+    participant MsCliente as MicroServicio Clientes
+    participant MsTransaction as MicroServicio Transacciones
+    participant TransactionDb as Base de Datos NoSQL de transacciones
+    activate MsTransaction
+    MsCliente ->> MsTransaction: Solicitud para registrar transferencia
+    activate TransactionDb
+    MsTransaction ->> TransactionDb: Registrar transferencia
+    TransactionDb -->> MsTransaction: Confirmación de transferencia
+    deactivate TransactionDb
+    MsTransaction -->> MsCliente: Respuesta de éxito o error
+    deactivate MsTransaction
+```
+### Obtener historial de transacciones
+
+
+```mermaid
+sequenceDiagram
+    title Registrar un transferencia
+    autonumber
+    participant MsCliente as MicroServicio Clientes
+    participant MsTransaction as MicroServicio Transacciones
+    participant TransactionDb as Base de Datos NoSQL de transacciones
+    activate MsTransaction
+    MsCliente ->> MsTransaction: Solicitud para obtener historial de transferencias
+    activate TransactionDb
+    MsTransaction ->> TransactionDb: Obtener transferencias
+    TransactionDb -->> MsTransaction: Enviar registros de transferencias
+    deactivate TransactionDb
+    MsTransaction -->> MsCliente: Respuesta de éxito o error
+    deactivate MsTransaction
+```
