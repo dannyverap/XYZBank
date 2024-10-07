@@ -254,7 +254,7 @@ paths:
     put:
       tags:
         - Account
-      summary: Depositar dinero a una account
+      summary: Depositar dinero a una cuenta
       description: Depositar dinero a una account según el id
       operationId: depositToAccount
       parameters:
@@ -264,7 +264,7 @@ paths:
         $ref: '#/components/requestBodies/MoneyRequest'
       responses:
         "200":
-          description: Account eliminada correctamente.
+          description: Operación exitosa.
           content:
             application/json:
               schema:
@@ -284,7 +284,7 @@ paths:
       operationId: withdrawFromAccount
       tags:
         - Account
-      summary: Depositar dinero a una account
+      summary: Retirar dinero de una cuenta
       description: Retirar dinero de una account
       parameters:
         - $ref: '#/components/parameters/uuidPath'
@@ -292,7 +292,35 @@ paths:
         $ref: '#/components/requestBodies/MoneyRequest'
       responses:
         "200":
-          description: Account eliminada correctamente.
+          description: Operacion exitosa.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelApiResponse'
+              example:
+                message: "Retiro de S/500 realizado"
+        '400':
+          $ref: "#/components/responses/BadPetition"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        '404':
+          $ref: "#/components/responses/NotFound"
+        '422':
+          $ref: "#/components/responses/UnprocessableContent"
+  /account/{id}/transferir:
+    put:
+      operationId: transferFromAccount
+      tags:
+        - Account
+      summary: Transferir de una cuenta a otra
+      description: Transfiere de una cuenta a otra
+      parameters:
+        - $ref: '#/components/parameters/uuidPath'
+      requestBody:
+        $ref: '#/components/requestBodies/MoneyTransactionRequest'
+      responses:
+        "200":
+          description: Operacion exitosa.
           content:
             application/json:
               schema:
@@ -723,6 +751,20 @@ components:
           example: 100.50
           default: 0
           description: Cantidad de dinero a retirar o depositar
+    MoneyTransfer:
+      type: object
+      properties:
+        dinero:
+          type: number
+          format: double
+          example: 100.50
+          default: 0
+          description: Cantidad de dinero a transferir
+        idCuentaDestino:
+          type: string
+          format: UUID
+          description: id de la cuenta que recibirá la transferencia
+          example: 123e4567-e89b-12d3-a456-426655440000
     ModelApiResponse:
       type: object
       properties:
@@ -742,6 +784,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Money'
+    MoneyTransactionRequest:
+      description: Un JSON que contiene información del dinero a transferir y el id de la cuenta destino
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MoneyTransfer'
     CustomerRequest:
       description: Un JSON que contiene información de un customer
       content:
