@@ -142,7 +142,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public ModelApiResponse transferMoneyBetweenAccounts(UUID id, MoneyTransfer moneyTransfer) {
-        if (moneyTransfer.getDinero() == null || moneyTransfer.getDinero().isNaN()) {
+        if (moneyTransfer.getDinero() == null || moneyTransfer.getDinero().isNaN() || moneyTransfer.getDinero() <= 0) {
             throw new BadPetitionException("Ingrese cantidad a transferir");
         }
         Account accountOrigin = this.accountRepository.findById(id)
@@ -169,7 +169,7 @@ public class AccountServiceImpl implements AccountService {
         if (newAccountOriginSaldo < -500) {
             throw new BadPetitionException("No puede retirar esa cantidad, su saldo actual es de :" + accountOrigin.getSaldo());
         }
-        if (TipoCuenta.AHORRO.equals(accountOrigin.getTipoCuenta()) && newAccountOriginSaldo < 0) {
+        if (TipoCuenta.AHORRO.equals(accountOrigin.getTipoCuenta()) && newAccountOriginSaldo <= 0) {
             throw new BadPetitionException("Su saldo no puede ser menor a 0 en una cuenta de Ahorro. Saldo actual:" + accountOrigin.getSaldo());
         }
         return newAccountOriginSaldo;
