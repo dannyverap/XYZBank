@@ -89,7 +89,6 @@ sequenceDiagram
     participant MsCuenta as MicroServicio Cuentas
     participant ClienteDb as Base de Datos de Clientes
     participant CuentaDb as Base de Datos de Cuentas
-    
     C ->> MsCliente: Solicitud para eliminar cliente
     activate MsCliente
     MsCliente ->> MsCuenta: Validar si cliente tiene cuenta activa
@@ -124,6 +123,7 @@ sequenceDiagram
 ## Cuentas
 
 ### Crear cuenta
+
 ```mermaid
 sequenceDiagram
     title Crear Cuenta
@@ -133,7 +133,6 @@ sequenceDiagram
     participant MsCliente as MicroServicio Clientes
     participant ClienteDb as Base de Datos de Clientes
     participant CuentaDb as Base de Datos de Cuentas
-
     C ->> MsCuenta: Solicitud para crear cuenta
     activate MsCuenta
     MsCuenta ->> MsCliente: Revisar si es cliente
@@ -145,17 +144,19 @@ sequenceDiagram
     MsCliente -->> MsCuenta: Respuesta cliente encontrado (o no)
     deactivate MsCliente
     alt Cliente
-    MsCuenta ->> CuentaDb: Crear nueva cuenta
-    activate CuentaDb
-    CuentaDb -->> MsCuenta: Confirmación
-    deactivate CuentaDb
-    MsCuenta -->> C : Respuesta de éxito
+        MsCuenta ->> CuentaDb: Crear nueva cuenta
+        activate CuentaDb
+        CuentaDb -->> MsCuenta: Confirmación
+        deactivate CuentaDb
+        MsCuenta -->> C: Respuesta de éxito
     else Persona no es cliente
-    MsCuenta -->> C: Error: No es cliente
-    deactivate MsCuenta
+        MsCuenta -->> C: Error: No es cliente
+        deactivate MsCuenta
     end
 ```
+
 ### Actualizar cuenta
+
 ```mermaid
 sequenceDiagram
     title Actualizar cuenta
@@ -165,7 +166,6 @@ sequenceDiagram
     participant MsCliente as MicroServicio Clientes
     participant ClienteDb as Base de Datos de Clientes
     participant CuentaDb as Base de Datos de Cuentas
-
     C ->> MsCuenta: Solicitud para crear cuenta
     activate MsCuenta
     MsCuenta ->> MsCliente: Revisar si es cliente
@@ -177,14 +177,14 @@ sequenceDiagram
     MsCliente -->> MsCuenta: Respuesta cliente encontrado (o no)
     deactivate MsCliente
     alt Cliente
-    MsCuenta ->> CuentaDb: Validar y actualizar cuenta
-    activate CuentaDb
-    CuentaDb -->> MsCuenta: Confirmación
-    deactivate CuentaDb
-    MsCuenta -->> C : Respuesta de éxito
+        MsCuenta ->> CuentaDb: Validar y actualizar cuenta
+        activate CuentaDb
+        CuentaDb -->> MsCuenta: Confirmación
+        deactivate CuentaDb
+        MsCuenta -->> C: Respuesta de éxito
     else Persona no es cliente
-    MsCuenta -->> C: Error: No es cliente
-    deactivate MsCuenta
+        MsCuenta -->> C: Error: No es cliente
+        deactivate MsCuenta
     end
 ```
 
@@ -197,7 +197,6 @@ sequenceDiagram
     actor C as Cajero
     participant MsCuenta as MicroServicio Cuentas
     participant CuentaDb as Base de Datos de Cuentas
-
     C ->> MsCuenta: Solicitud para listar cuentas
     activate MsCuenta
     MsCuenta ->> CuentaDb: Consultar todas las cuentas
@@ -217,7 +216,6 @@ sequenceDiagram
     actor C as Cajero
     participant MsCuenta as MicroServicio Cuentas
     participant CuentaDb as Base de Datos de Cuentas
-
     C ->> MsCuenta: Solicitud para consultar detalle de cuentas
     activate MsCuenta
     MsCuenta ->> CuentaDb: Consultar todas las cuentas
@@ -257,6 +255,7 @@ sequenceDiagram
         deactivate MsCuenta
     end
  ```
+
 ### Depositar
 
 ```mermaid
@@ -266,7 +265,7 @@ sequenceDiagram
     actor C as Cajero
     participant MsCuenta as MicroServicio Cuentas
     participant CuentaDb as Base de Datos de Cuentas
-
+    participant MsTransaction as Microservicio Transacciones
     C ->> MsCuenta: Solicitud para hacer depósito
     activate MsCuenta
     MsCuenta ->> CuentaDb: Verificar existencia de la cuenta
@@ -277,10 +276,16 @@ sequenceDiagram
     activate CuentaDb
     CuentaDb -->> MsCuenta: Confirmación de saldo actualizado
     deactivate CuentaDb
+    activate MsTransaction
+    MsCuenta ->> MsTransaction: Registrar transacción
+    MsTransaction -->> MsCuenta: Confirmación de registro
+    deactivate MsTransaction
     MsCuenta ->> C: Depósito realizado
     deactivate MsCuenta
  ```
-### Retirar 
+
+### Retirar
+
 ```mermaid
 sequenceDiagram
     title Hacer Retiro en Cuenta
@@ -288,6 +293,7 @@ sequenceDiagram
     actor C as Cajero
     participant MsCuenta as MicroServicio Cuentas
     participant CuentaDb as Base de Datos de Cuentas
+    participant MsTransaction as Microservicio Transacciones
     C ->> MsCuenta: Solicitud para hacer retiro
     activate MsCuenta
     MsCuenta ->> CuentaDb: Obtener saldo actual
@@ -300,7 +306,44 @@ sequenceDiagram
         activate CuentaDb
         CuentaDb -->> MsCuenta: Confirmación de saldo actualizado
         deactivate CuentaDb
+        activate MsTransaction
+        MsCuenta ->> MsTransaction: Registrar transacción
+        MsTransaction -->> MsCuenta: Confirmación de registro
+        deactivate MsTransaction
         MsCuenta -->> C: Confirmación: Retiro realizado exitosamente
+    else Saldo en insuficiente: -500 (corriente) o 0 (ahorro)
+        MsCuenta -->> C: Error: Saldo insuficiente
+        deactivate MsCuenta
+    end
+ ```
+
+### Transferir de una cuenta otra
+
+```mermaid
+sequenceDiagram
+    title Hacer Transferencia de una cuenta a otra
+    autonumber
+    actor C as Cajero
+    participant MsCuenta as MicroServicio Cuentas
+    participant CuentaDb as Base de Datos de Cuentas
+    participant MsTransaction as Microservicio Transacciones
+    C ->> MsCuenta: Solicitud para hacer transferencia
+    activate MsCuenta
+    MsCuenta ->> CuentaDb:  Solicitar información de las cuentas
+    activate CuentaDb
+    CuentaDb -->> MsCuenta: Enviar información de cuentas
+    deactivate CuentaDb
+
+    alt Saldo en adecuado y cuentas validas
+        MsCuenta ->> CuentaDb: Actualizar saldos de cuentas
+        activate CuentaDb
+        CuentaDb -->> MsCuenta: Confirmación de saldos actualizados
+        deactivate CuentaDb
+        activate MsTransaction
+        MsCuenta ->> MsTransaction: Registrar transacción
+        MsTransaction -->> MsCuenta: Confirmación de registro
+        deactivate MsTransaction
+        MsCuenta -->> C: Confirmación: Transacción realizada exitosamente
     else Saldo en insuficiente: -500 (corriente) o 0 (ahorro)
         MsCuenta -->> C: Error: Saldo insuficiente
         deactivate MsCuenta
