@@ -23,7 +23,7 @@ public class RestAccountClient {
 
     public List<AccountResponse> getAccountsByClientId(UUID id) {
         try {
-            return restTemplate().exchange(this.Url + "?clienteId=" + id,
+            return restTemplate().exchange(Url + "?clienteId=" + id,
                                            HttpMethod.GET,
                                            null,
                                            new ParameterizedTypeReference<List<AccountResponse>>() {
@@ -37,7 +37,7 @@ public class RestAccountClient {
 
     public void DeleteAccount(UUID id) {
         try {
-            restTemplate().delete(this.Url + "/" + id);
+            restTemplate().delete(Url + "/" + id);
         } catch (Exception e) {
             throw new RuntimeException("Error inesperado: " + e.getMessage());
         }

@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fb9f407-076d-41dc-a485-e64b801bd6fe" name="Changes" comment="Add Todo: Solve problem with host register as &quot;host.docker.internal:&quot; / &quot;NTT..&quot; om RegistryService">
-      <change afterPath="$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/clients/RestTransactionClient.java" afterDir="false" />
+    <list default="true" id="6fb9f407-076d-41dc-a485-e64b801bd6fe" name="Changes" comment="Add new convertMoneyTransferToMoney method for accountMapper">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/business/AccountServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/business/AccountServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/clients/RestCustomerClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/clients/RestCustomerClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AccountMs/AccountMs/src/main/resources/openapi.yml" beforeDir="false" afterPath="$PROJECT_DIR$/AccountMs/AccountMs/src/main/resources/openapi.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CustomerMs/src/main/java/com/danny/CustomerMs/clients/RestAccountClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/CustomerMs/src/main/java/com/danny/CustomerMs/clients/RestAccountClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TransactionMs/src/main/java/com/danny/TransactionMs/business/TransactionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/TransactionMs/src/main/java/com/danny/TransactionMs/business/TransactionServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TransactionMs/src/main/resources/openapi.yml" beforeDir="false" afterPath="$PROJECT_DIR$/TransactionMs/src/main/resources/openapi.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/clients/RestTransactionClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/clients/RestTransactionClient.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +63,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.AccountMs.executor": "Run",
+    "Application.AccountMs.executor": "Debug",
     "Application.CustomerMs.executor": "Run",
     "Application.Gateway.executor": "Run",
     "Application.ServiceReg.executor": "Run",
@@ -103,6 +98,13 @@
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="mvn clean install" />
+    </option>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="Application" />
+      </set>
     </option>
   </component>
   <component name="RunManager" selected="Application.AccountMs">
@@ -380,7 +382,95 @@
       <option name="project" value="LOCAL" />
       <updated>1728225521316</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Fix typos">
+      <option name="closed" value="true" />
+      <created>1728232869395</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1728232869395</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Refactor RestCustomerClient bean name">
+      <option name="closed" value="true" />
+      <created>1728232949801</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1728232949801</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Create RestTransactionClient to register deposits and withdraws from Account service to TransactionService">
+      <option name="closed" value="true" />
+      <created>1728233054488</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1728233054488</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Refactor RestTransactionClient">
+      <option name="closed" value="true" />
+      <created>1728270878120</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1728270878120</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Use constants to defines urls on clients">
+      <option name="closed" value="true" />
+      <created>1728270928218</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1728270928218</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Add message when throwing error on the transactionClient">
+      <option name="closed" value="true" />
+      <created>1728271320238</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1728271320238</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Update openapi with new endpoint for transfer">
+      <option name="closed" value="true" />
+      <created>1728275332707</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1728275332707</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Add transferMoneyBetweenAccounts method for account service">
+      <option name="closed" value="true" />
+      <created>1728275366539</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1728275366539</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Update AccountDelegateImpl with new transfer endpoint">
+      <option name="closed" value="true" />
+      <created>1728275404689</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1728275404689</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Fix: RestTransactionClient missed setCuentaOrigin">
+      <option name="closed" value="true" />
+      <created>1728275464531</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1728275464531</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Add new convertMoneyTransferToMoney method for accountMapper">
+      <option name="closed" value="true" />
+      <created>1728275679220</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1728275679220</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -395,17 +485,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add documentation" />
-    <MESSAGE value="Apply code style" />
-    <MESSAGE value="Update dependencies" />
-    <MESSAGE value="Add validations to customer and account model" />
-    <MESSAGE value="Improve account service with new createApiResponse method and apply validations to updateAccount method" />
-    <MESSAGE value="Improve customer service with validations to updateCustomer method" />
-    <MESSAGE value="Create gateway and properties" />
-    <MESSAGE value="Update gateway to show h2 consoles" />
-    <MESSAGE value="Update Diagrama de componentes and readme" />
-    <MESSAGE value="Update diagrama de componentes" />
-    <MESSAGE value="Update diagrama de secuencias" />
     <MESSAGE value="Initial commit TransactionMs" />
     <MESSAGE value="Create custom exceptions" />
     <MESSAGE value="Create Transaction class and TipoTransaction enum" />
@@ -420,7 +499,18 @@
     <MESSAGE value="Configure gateway with TransactionMs routes" />
     <MESSAGE value="Update openapi.yml" />
     <MESSAGE value="Add Todo: Solve problem with host register as &quot;host.docker.internal:&quot; / &quot;NTT..&quot; om RegistryService" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add Todo: Solve problem with host register as &quot;host.docker.internal:&quot; / &quot;NTT..&quot; om RegistryService" />
+    <MESSAGE value="Fix typos" />
+    <MESSAGE value="Refactor RestCustomerClient bean name" />
+    <MESSAGE value="Create RestTransactionClient to register deposits and withdraws from Account service to TransactionService" />
+    <MESSAGE value="Refactor RestTransactionClient" />
+    <MESSAGE value="Use constants to defines urls on clients" />
+    <MESSAGE value="Add message when throwing error on the transactionClient" />
+    <MESSAGE value="Update openapi with new endpoint for transfer" />
+    <MESSAGE value="Add transferMoneyBetweenAccounts method for account service" />
+    <MESSAGE value="Update AccountDelegateImpl with new transfer endpoint" />
+    <MESSAGE value="Fix: RestTransactionClient missed setCuentaOrigin" />
+    <MESSAGE value="Add new convertMoneyTransferToMoney method for accountMapper" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add new convertMoneyTransferToMoney method for accountMapper" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -439,21 +529,6 @@
           <url>file://$PROJECT_DIR$/TransactionMs/src/main/java/com/danny/TransactionMs/business/TransactionServiceImpl.java</url>
           <line>29</line>
           <option name="timeStamp" value="30" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/clients/RestTransactionClient.java</url>
-          <line>78</line>
-          <option name="timeStamp" value="31" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/business/AccountServiceImpl.java</url>
-          <line>119</line>
-          <option name="timeStamp" value="33" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/business/AccountServiceImpl.java</url>
-          <line>124</line>
-          <option name="timeStamp" value="34" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

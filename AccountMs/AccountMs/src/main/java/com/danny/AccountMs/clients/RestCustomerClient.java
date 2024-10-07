@@ -20,7 +20,7 @@ public class RestCustomerClient {
 
     public void validateCustomerId(UUID id) {
         try {
-            restCustomerTemplate().getForObject(this.Url + id.toString(), CustomerResponse.class);
+            restCustomerTemplate().getForObject(Url + id.toString(), CustomerResponse.class);
         } catch (HttpClientErrorException e) {
             throw new BadPetitionException("El cliente no fue encontrado en el servicio de cuentas");
         } catch (Exception e) {
