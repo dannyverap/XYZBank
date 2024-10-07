@@ -1,10 +1,7 @@
 package com.danny.AccountMs.business;
 
 import com.danny.AccountMs.exception.BadPetitionException;
-import com.danny.AccountMs.model.Account;
-import com.danny.AccountMs.model.AccountRequest;
-import com.danny.AccountMs.model.AccountResponse;
-import com.danny.AccountMs.model.TipoCuenta;
+import com.danny.AccountMs.model.*;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -46,6 +43,12 @@ public class AccountMapper {
             return TipoCuenta.CORRIENTE;
         }
         throw new BadPetitionException("Tipo de cuenta no valido");
+    }
+
+    public Money convertMoneyTransferToMoney(Double moneyTransfer) {
+        Money money = new Money();
+        money.setDinero(moneyTransfer);
+        return money;
     }
 }
 
