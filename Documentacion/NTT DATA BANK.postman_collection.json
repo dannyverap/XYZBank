@@ -71,13 +71,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url_customer}}/{{customer_uri}}/d7bb384c-9a94-49a6-a4a5-1926d0d61e95",
+							"raw": "{{base_url_customer}}/{{customer_uri}}/43ee6a08-ebf0-41f3-b350-7fc7b0788f9d",
 							"host": [
 								"{{base_url_customer}}"
 							],
 							"path": [
 								"{{customer_uri}}",
-								"d7bb384c-9a94-49a6-a4a5-1926d0d61e95"
+								"43ee6a08-ebf0-41f3-b350-7fc7b0788f9d"
 							]
 						},
 						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
@@ -116,7 +116,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nombre\": \"Danny\",\n    \"apellido\":\"Vera Palomino\",\n    \"dni\": \"77885555\",\n    \"email\": \"nttdata@gmail.com\"\n}",
+							"raw": "{\n    \"nombre\": \"Danny\",\n    \"apellido\":\"Vera Palomino\",\n    \"dni\": \"77819143\",\n    \"email\": \"das3s@gm.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -158,7 +158,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nombre\": \"[updated]Danny\",\n    \"apellido\":\"[updated]Vera Palomino\",\n    \"dni\": \"[updated]77885555\",\n    \"email\": \"[updated]nttdata@gmail.com\"\n}",
+							"raw": "{\n    \"nombre\": \"[updated]Danny\",\n    \"apellido\":\"[updated]Vera Palomino\",\n    \"dni\":\"11112222\",\n    \"email\": \"nttdata@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -166,13 +166,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url_customer}}/{{customer_uri}}/7e7a0fbd-ff08-4002-93bd-dd5a725edccf",
+							"raw": "{{base_url_customer}}/{{customer_uri}}/064b9da6-d129-48d2-bcd9-9aa60837c2b6",
 							"host": [
 								"{{base_url_customer}}"
 							],
 							"path": [
 								"{{customer_uri}}",
-								"7e7a0fbd-ff08-4002-93bd-dd5a725edccf"
+								"064b9da6-d129-48d2-bcd9-9aa60837c2b6"
 							]
 						},
 						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
@@ -209,13 +209,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url_customer}}/{{customer_uri}}/d7bb384c-9a94-49a6-a4a5-1926d0d61e95",
+							"raw": "{{base_url_customer}}/{{customer_uri}}/47f83850-7499-482b-97ad-724a01f025c9",
 							"host": [
 								"{{base_url_customer}}"
 							],
 							"path": [
 								"{{customer_uri}}",
-								"d7bb384c-9a94-49a6-a4a5-1926d0d61e95"
+								"47f83850-7499-482b-97ad-724a01f025c9"
 							]
 						},
 						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
@@ -247,7 +247,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url_account}}/{{account_uri}}?clienteId=0f526d68-a67c-4814-b793-d4a31c68d1e9",
+							"raw": "{{base_url_account}}/{{account_uri}}?clienteId=",
 							"host": [
 								"{{base_url_account}}"
 							],
@@ -257,7 +257,7 @@
 							"query": [
 								{
 									"key": "clienteId",
-									"value": "0f526d68-a67c-4814-b793-d4a31c68d1e9"
+									"value": ""
 								}
 							]
 						},
@@ -285,13 +285,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url_account}}/{{account_uri}}/72fcf534-0f4c-4a47-bd92-0122eb7a8c8e",
+							"raw": "{{base_url_account}}/{{account_uri}}/3e7e6d93-b73f-48d5-b2d3-fc9b4dcdc194",
 							"host": [
 								"{{base_url_account}}"
 							],
 							"path": [
 								"{{account_uri}}",
-								"72fcf534-0f4c-4a47-bd92-0122eb7a8c8e"
+								"3e7e6d93-b73f-48d5-b2d3-fc9b4dcdc194"
 							]
 						},
 						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
@@ -330,7 +330,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"saldo\": 665,\n  \"tipoCuenta\": \"Ahorro\",\n  \"clienteId\": \"d7bb384c-9a94-49a6-a4a5-1926d0d61e95\"\n}",
+							"raw": "{\n  \"saldo\": 665,\n  \"tipoCuenta\": \"Corriente\",\n    \"clienteId\": \"c7b8701e-8b45-454d-a640-2b3918fa651b\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -372,7 +372,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"saldo\": 665,\n  \"tipoCuenta\": \"Corriente\",\n  \"clienteId\": \"d7bb384c-9a94-49a6-a4a5-1926d0d61e95\"\n}",
+							"raw": "{\n  \"tipoCuenta\": \"Ahorro\",\n  \"clienteId\": \"d7bb384c-9a94-49a6-a4a5-1926d0d61e95\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -380,13 +380,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url_account}}/{{account_uri}}/6a3b2b0f-c337-4d95-a18f-537a5ee0f1a5",
+							"raw": "{{base_url_account}}/{{account_uri}}/921fe5bf-2a0c-4fc0-92f5-8b7234c77b5a",
 							"host": [
 								"{{base_url_account}}"
 							],
 							"path": [
 								"{{account_uri}}",
-								"6a3b2b0f-c337-4d95-a18f-537a5ee0f1a5"
+								"921fe5bf-2a0c-4fc0-92f5-8b7234c77b5a"
 							]
 						},
 						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
@@ -423,14 +423,58 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url_account}}/{{account_uri}}/c0f962c3-55ab-48f6-a0c6-6d5eef8e0b1b/depositar",
+							"raw": "{{base_url_account}}/{{account_uri}}/7904fa08-4750-4bfb-859d-581ff2696d4e/depositar",
 							"host": [
 								"{{base_url_account}}"
 							],
 							"path": [
 								"{{account_uri}}",
-								"c0f962c3-55ab-48f6-a0c6-6d5eef8e0b1b",
+								"7904fa08-4750-4bfb-859d-581ff2696d4e",
 								"depositar"
+							]
+						},
+						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Transferir dinero",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful PUT request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"dinero\": 540,\n   \"idCuentaDestino\":\"431ab46e-d396-4b2a-a755-b1214d65f8c6\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_account}}/{{account_uri}}/7904fa08-4750-4bfb-859d-581ff2696d4e/transferir",
+							"host": [
+								"{{base_url_account}}"
+							],
+							"path": [
+								"{{account_uri}}",
+								"7904fa08-4750-4bfb-859d-581ff2696d4e",
+								"transferir"
 							]
 						},
 						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
@@ -459,7 +503,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n   \"dinero\": 777\n}",
+							"raw": "{\n   \"dinero\":665\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -467,13 +511,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url_account}}/{{account_uri}}/10315602-abfe-4033-a692-85466c29409f/retirar",
+							"raw": "{{base_url_account}}/{{account_uri}}/93df8e23-0351-4a53-832f-66f68fca1a09/retirar",
 							"host": [
 								"{{base_url_account}}"
 							],
 							"path": [
 								"{{account_uri}}",
-								"10315602-abfe-4033-a692-85466c29409f",
+								"93df8e23-0351-4a53-832f-66f68fca1a09",
 								"retirar"
 							]
 						},
@@ -511,16 +555,132 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url_account}}/{{account_uri}}/29b9fafd-4639-4eeb-a1e2-3b3867d53679",
+							"raw": "{{base_url_account}}/{{account_uri}}/3e7e6d93-b73f-48d5-b2d3-fc9b4dcdc194",
 							"host": [
 								"{{base_url_account}}"
 							],
 							"path": [
 								"{{account_uri}}",
-								"29b9fafd-4639-4eeb-a1e2-3b3867d53679"
+								"3e7e6d93-b73f-48d5-b2d3-fc9b4dcdc194"
 							]
 						},
 						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "Historial de transacciones",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_transaction}}/{{transaction_uri}}/historial",
+							"host": [
+								"{{base_url_transaction}}"
+							],
+							"path": [
+								"{{transaction_uri}}",
+								"historial"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar depósito",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n        \"tipo\": \"Deposito\",\r\n        \"fecha\": \"2024-10-07\",\r\n        \"monto\": 992.0,\r\n        \"cuentaOrigen\": null,\r\n        \"cuentaDestino\": \"4823COR565\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_transaction}}/{{transaction_uri}}/deposito",
+							"host": [
+								"{{base_url_transaction}}"
+							],
+							"path": [
+								"{{transaction_uri}}",
+								"deposito"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar retiro",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n        \"tipo\": \"Retiro\",\r\n        \"fecha\": \"2024-10-07\",\r\n        \"monto\": 992.0,\r\n        \"cuentaOrigen\": null,\r\n        \"cuentaDestino\": \"4823COR565\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_transaction}}/{{transaction_uri}}/retiro",
+							"host": [
+								"{{base_url_transaction}}"
+							],
+							"path": [
+								"{{transaction_uri}}",
+								"retiro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar transferencia",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n        \"tipo\": \"Transferencia\",\r\n        \"fecha\": \"2024-10-07\",\r\n        \"monto\": 992.0,\r\n        \"cuentaOrigen\": \"1321AHOR321\",\r\n        \"cuentaDestino\": \"4823COR565\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_transaction}}/{{transaction_uri}}/transferencia",
+							"host": [
+								"{{base_url_transaction}}"
+							],
+							"path": [
+								"{{transaction_uri}}",
+								"transferencia"
+							]
+						}
 					},
 					"response": []
 				}
@@ -565,6 +725,16 @@
 		{
 			"key": "account_uri",
 			"value": "account",
+			"type": "string"
+		},
+		{
+			"key": "base_url_transaction",
+			"value": "http://localhost:8083",
+			"type": "string"
+		},
+		{
+			"key": "transaction_uri",
+			"value": "transaction",
 			"type": "string"
 		}
 	]

@@ -26,10 +26,13 @@ Este sistema gestiona transacciones bancarias entre cuentas de clientes, permiti
 - **AccountMS**: CRUD de cuentas bancarias, con funcionalidades de depósitos y retiros  
   - URL: [http://localhost:8082/account](http://localhost:8082/account)
 
+- **AccountMS**: Registra los operaciones de deposito, retiro y transferencias que se ejecutan desde el accountMS
+    - URL: [http://localhost:8083/transaction](http://localhost:8083/transaction)
+
 ## Base de Datos
 
-- **H2 Database**: Base de datos relacional en memoria para pruebas
-
+- **H2 Database**: Base de datos relacional en memoria para pruebas usado para los servicios AccountMS y CustomerMS
+- **MongoDB**: Base de datos no relacional usado para registrar las operaciones bancarias entre cuentas
 ## Reglas de Negocio
 
 1. **Validaciones de Cliente:**
@@ -46,6 +49,7 @@ Este sistema gestiona transacciones bancarias entre cuentas de clientes, permiti
 1. Levantar los servicios: Registry, Gateway, AccountMS y CustomerMS.
    - AccountMS: [http://localhost:8080/account](http://localhost:8080/account)
    - CustomerMS: [http://localhost:8080/customer](http://localhost:8080/customer)
+   - TransactionMS: [http://localhost:8080/customer](http://localhost:8080/transaction)
    - Eureka: [http://localhost:8080/eureka/main](http://localhost:8080/eureka/main)
 
 2. Importar las [colecciones](Documentacion%2FNTT%20DATA%20BANK.postman_collection.json) en Postman.
