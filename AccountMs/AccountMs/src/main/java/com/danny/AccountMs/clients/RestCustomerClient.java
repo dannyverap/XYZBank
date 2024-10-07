@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Configuration
 public class RestCustomerClient {
-    String Url = "http://localhost:8080/customer/";
+    private static final String Url = "http://localhost:8080/customer/";
 
     @Bean
     public RestTemplate restCustomerTemplate() {

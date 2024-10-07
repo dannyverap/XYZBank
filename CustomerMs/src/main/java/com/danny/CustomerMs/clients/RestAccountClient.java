@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Configuration
 public class RestAccountClient {
-    String Url = "http://localhost:8082/account";
+    private static final String Url = "http://localhost:8082/account";
 
     @Bean
     public RestTemplate restTemplate() {
