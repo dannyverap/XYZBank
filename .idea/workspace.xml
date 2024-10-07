@@ -4,8 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6fb9f407-076d-41dc-a485-e64b801bd6fe" name="Changes" comment="Update diagrama de componentes">
+    <list default="true" id="6fb9f407-076d-41dc-a485-e64b801bd6fe" name="Changes" comment="Refactor clients to use openfeign">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AccountMs/AccountMs/src/main/resources/openapi.yml" beforeDir="false" afterPath="$PROJECT_DIR$/AccountMs/AccountMs/src/main/resources/openapi.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CustomerMs/src/main/resources/openapi.yml" beforeDir="false" afterPath="$PROJECT_DIR$/CustomerMs/src/main/resources/openapi.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documentacion/NTT DATA BANK.postman_collection.json" beforeDir="false" afterPath="$PROJECT_DIR$/Documentacion/NTT DATA BANK.postman_collection.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gateway/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Gateway/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TransactionMs/src/main/resources/openapi.yml" beforeDir="false" afterPath="$PROJECT_DIR$/TransactionMs/src/main/resources/openapi.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,10 +26,17 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Enum" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -38,6 +51,9 @@
     &quot;accountId&quot;: &quot;e4939705-d3ed-4fae-a508-4542a0b949b9&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -49,27 +65,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.AccountMs.executor": "Run",
-    "Application.CustomerMs.executor": "Run",
-    "Application.Gateway.executor": "Run",
-    "Application.ServiceReg.executor": "Run",
-    "Application.ServiceRegApplication.executor": "Run",
-    "Maven.AccountMs [clean,install].executor": "Run",
-    "Maven.CustomerMs [clean,install].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/dverapal/OneDrive - NTT DATA EMEAL/Escritorio",
-    "settings.editor.selected.configurable": "preferences.sourceCode.Java",
-    "settings.editor.splitter.proportion": "0.3058104"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.AccountMs.executor&quot;: &quot;Run&quot;,
+    &quot;Application.CustomerMs.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Gateway.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ServiceReg.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ServiceRegApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.TransactionMs.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.AccountMs [clean,install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.CustomerMs [clean,install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.TransactionMs [clean,install].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;TransactionMs&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/dverapal/OneDrive - NTT DATA EMEAL/Escritorio/creditcardsaa&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.CommitDialog&quot;,
+    &quot;settings.editor.splitter.proportion&quot;: &quot;0.3058104&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\dverapal\Downloads\Proyecto\TransactionMs\src\main\java\com\danny\TransactionMs" />
+      <recent name="C:\Users\dverapal\Downloads\Proyecto\TransactionMs\src\main\resources" />
       <recent name="C:\Users\dverapal\Downloads\Proyecto" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.danny.TransactionMs.model" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.danny.CustomerMs.clients" />
+      <recent name="com.danny.AccountMs.clients" />
+      <recent name="com.danny.TransactionMs.business" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -77,7 +105,14 @@
       <command value="mvn clean install" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.CustomerMs">
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="Application" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Application.TransactionMs">
     <configuration name="AccountMs" type="Application" factoryName="Application">
       <option name="ALTERNATIVE_JRE_PATH" value="17" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
@@ -112,10 +147,18 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TransactionMs" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.danny.TransactionMs.TransactionMsApplication" />
+      <module name="TransactionMs" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.Gateway" />
       <item itemvalue="Application.AccountMs" />
       <item itemvalue="Application.CustomerMs" />
+      <item itemvalue="Application.TransactionMs" />
       <item itemvalue="Application.ServiceReg" />
     </list>
   </component>
@@ -224,7 +267,271 @@
       <option name="project" value="LOCAL" />
       <updated>1728072358340</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Update diagrama de secuencias">
+      <option name="closed" value="true" />
+      <created>1728073872542</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1728073872542</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Initial commit TransactionMs">
+      <option name="closed" value="true" />
+      <created>1728223607098</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1728223607098</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Create custom exceptions">
+      <option name="closed" value="true" />
+      <created>1728223639578</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1728223639578</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Create Transaction class and TipoTransaction enum">
+      <option name="closed" value="true" />
+      <created>1728223692076</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1728223692076</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Create TransactionRepository interface">
+      <option name="closed" value="true" />
+      <created>1728223733658</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1728223733658</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Add openapi documentation with new endpoints of TransactionMS">
+      <option name="closed" value="true" />
+      <created>1728223773843</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1728223773843</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Implement ExceptionTranslator to TransactionMs">
+      <option name="closed" value="true" />
+      <created>1728223815408</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1728223815408</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Create TransactionService interface">
+      <option name="closed" value="true" />
+      <created>1728223843742</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1728223843742</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Implement TransactionService">
+      <option name="closed" value="true" />
+      <created>1728223861298</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1728223861298</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Add transactionMapper to transaction requests and responses">
+      <option name="closed" value="true" />
+      <created>1728223921846</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1728223921846</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Implement transaction delegate">
+      <option name="closed" value="true" />
+      <created>1728223944620</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1728223944620</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Add eureka client to TransactionMs">
+      <option name="closed" value="true" />
+      <created>1728224866984</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1728224866984</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Configure gateway with TransactionMs routes">
+      <option name="closed" value="true" />
+      <created>1728225105854</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1728225105854</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Update openapi.yml">
+      <option name="closed" value="true" />
+      <created>1728225479613</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1728225479613</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Add Todo: Solve problem with host register as &quot;host.docker.internal:&quot; / &quot;NTT..&quot; om RegistryService">
+      <option name="closed" value="true" />
+      <created>1728225521316</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1728225521316</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Fix typos">
+      <option name="closed" value="true" />
+      <created>1728232869395</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1728232869395</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Refactor RestCustomerClient bean name">
+      <option name="closed" value="true" />
+      <created>1728232949801</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1728232949801</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Create RestTransactionClient to register deposits and withdraws from Account service to TransactionService">
+      <option name="closed" value="true" />
+      <created>1728233054488</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1728233054488</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Refactor RestTransactionClient">
+      <option name="closed" value="true" />
+      <created>1728270878120</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1728270878120</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Use constants to defines urls on clients">
+      <option name="closed" value="true" />
+      <created>1728270928218</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1728270928218</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Add message when throwing error on the transactionClient">
+      <option name="closed" value="true" />
+      <created>1728271320238</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1728271320238</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Update openapi with new endpoint for transfer">
+      <option name="closed" value="true" />
+      <created>1728275332707</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1728275332707</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Add transferMoneyBetweenAccounts method for account service">
+      <option name="closed" value="true" />
+      <created>1728275366539</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1728275366539</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Update AccountDelegateImpl with new transfer endpoint">
+      <option name="closed" value="true" />
+      <created>1728275404689</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1728275404689</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Fix: RestTransactionClient missed setCuentaOrigin">
+      <option name="closed" value="true" />
+      <created>1728275464531</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1728275464531</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Add new convertMoneyTransferToMoney method for accountMapper">
+      <option name="closed" value="true" />
+      <created>1728275679220</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1728275679220</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Implement transferMoneyBetweenAccounts method Service">
+      <option name="closed" value="true" />
+      <created>1728276005999</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1728276005999</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Minor changes">
+      <option name="closed" value="true" />
+      <created>1728276177180</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1728276177180</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Fix validations of accounts limits on accountservice">
+      <option name="closed" value="true" />
+      <created>1728277281079</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1728277281079</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Update DiagramaDeSecuencia.md update with TransactionMS and add TransferMethod to accounts">
+      <option name="closed" value="true" />
+      <created>1728329163643</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1728329163643</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Add Transaction flow to DiagramaDeSecuencia.md">
+      <option name="closed" value="true" />
+      <created>1728330299788</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1728330299788</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Update Diagrama de componentes with TransactionMs">
+      <option name="closed" value="true" />
+      <created>1728330642071</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1728330642071</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Refactor clients to use openfeign">
+      <option name="closed" value="true" />
+      <created>1728334163744</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1728334163744</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -239,19 +546,32 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add documentation and readme.md" />
-    <MESSAGE value="Add minor changes" />
-    <MESSAGE value="Add documentation" />
-    <MESSAGE value="Apply code style" />
-    <MESSAGE value="Update dependencies" />
-    <MESSAGE value="Add validations to customer and account model" />
-    <MESSAGE value="Improve account service with new createApiResponse method and apply validations to updateAccount method" />
-    <MESSAGE value="Improve customer service with validations to updateCustomer method" />
-    <MESSAGE value="Create gateway and properties" />
-    <MESSAGE value="Update gateway to show h2 consoles" />
-    <MESSAGE value="Update Diagrama de componentes and readme" />
-    <MESSAGE value="Update diagrama de componentes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update diagrama de componentes" />
+    <MESSAGE value="Implement TransactionService" />
+    <MESSAGE value="Add transactionMapper to transaction requests and responses" />
+    <MESSAGE value="Implement transaction delegate" />
+    <MESSAGE value="Add eureka client to TransactionMs" />
+    <MESSAGE value="Configure gateway with TransactionMs routes" />
+    <MESSAGE value="Update openapi.yml" />
+    <MESSAGE value="Add Todo: Solve problem with host register as &quot;host.docker.internal:&quot; / &quot;NTT..&quot; om RegistryService" />
+    <MESSAGE value="Fix typos" />
+    <MESSAGE value="Refactor RestCustomerClient bean name" />
+    <MESSAGE value="Create RestTransactionClient to register deposits and withdraws from Account service to TransactionService" />
+    <MESSAGE value="Refactor RestTransactionClient" />
+    <MESSAGE value="Use constants to defines urls on clients" />
+    <MESSAGE value="Add message when throwing error on the transactionClient" />
+    <MESSAGE value="Update openapi with new endpoint for transfer" />
+    <MESSAGE value="Add transferMoneyBetweenAccounts method for account service" />
+    <MESSAGE value="Update AccountDelegateImpl with new transfer endpoint" />
+    <MESSAGE value="Fix: RestTransactionClient missed setCuentaOrigin" />
+    <MESSAGE value="Add new convertMoneyTransferToMoney method for accountMapper" />
+    <MESSAGE value="Implement transferMoneyBetweenAccounts method Service" />
+    <MESSAGE value="Minor changes" />
+    <MESSAGE value="Fix validations of accounts limits on accountservice" />
+    <MESSAGE value="Update DiagramaDeSecuencia.md update with TransactionMS and add TransferMethod to accounts" />
+    <MESSAGE value="Add Transaction flow to DiagramaDeSecuencia.md" />
+    <MESSAGE value="Update Diagrama de componentes with TransactionMs" />
+    <MESSAGE value="Refactor clients to use openfeign" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor clients to use openfeign" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -262,9 +582,14 @@
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/AccountMs/AccountMs/src/main/java/com/danny/AccountMs/business/AccountServiceImpl.java</url>
-          <line>33</line>
-          <option name="timeStamp" value="16" />
+          <url>file://$PROJECT_DIR$/TransactionMs/src/main/java/com/danny/TransactionMs/business/TransactionServiceImpl.java</url>
+          <line>28</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/TransactionMs/src/main/java/com/danny/TransactionMs/business/TransactionServiceImpl.java</url>
+          <line>29</line>
+          <option name="timeStamp" value="30" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

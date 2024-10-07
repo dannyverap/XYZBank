@@ -2,10 +2,7 @@ package com.danny.AccountMs;
 
 import com.danny.AccountMs.api.AccountApiDelegate;
 import com.danny.AccountMs.business.AccountService;
-import com.danny.AccountMs.model.AccountRequest;
-import com.danny.AccountMs.model.AccountResponse;
-import com.danny.AccountMs.model.ModelApiResponse;
-import com.danny.AccountMs.model.Money;
+import com.danny.AccountMs.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -17,6 +14,11 @@ import java.util.UUID;
 public class AccountDelegateImpl implements AccountApiDelegate {
     @Autowired
     AccountService accountService;
+
+    @Override
+    public ResponseEntity<ModelApiResponse> transferFromAccount(UUID id, MoneyTransfer moneyTransfer) {
+        return ResponseEntity.ok(this.accountService.transferMoneyBetweenAccounts(id, moneyTransfer));
+    }
 
     @Override
     public ResponseEntity<AccountResponse> createAccount(AccountRequest accountRequest) {
