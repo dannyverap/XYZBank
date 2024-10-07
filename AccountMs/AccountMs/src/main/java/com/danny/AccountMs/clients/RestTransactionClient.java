@@ -47,8 +47,10 @@ public class RestTransactionClient {
         try {
             return this.restTransactionTemplate().postForEntity(this.Url + operation, transactionRequest, TransactionResponse.class)
                                     .getBody();
+            return this.restTransactionTemplate()
+                       .postForEntity(this.Url + operation, transactionRequest, TransactionResponse.class)
         } catch (Exception e) {
-            throw new RuntimeException("Error al registrar la transacción",e);
+            throw new RuntimeException("Error al registrar la transacción", e);
         }
     }
 
@@ -63,6 +65,7 @@ public class RestTransactionClient {
         TransactionRequest transactionRequest = new TransactionRequest();
         transactionRequest.setMonto(money.getDinero());
         transactionRequest.setCuentaDestino(cuentaDestino);
+        transactionRequest.setCuentaOrigen(cuentaOrigen);
         transactionRequest.setTipo(tipoTransaction);
         transactionRequest.setFecha(LocalDate.now());
 
