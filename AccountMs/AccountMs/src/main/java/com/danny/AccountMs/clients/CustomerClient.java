@@ -1,26 +1,21 @@
 package com.danny.AccountMs.clients;
 
 import com.danny.AccountMs.exception.BadPetitionException;
-import com.danny.AccountMs.model.CustomerResponse;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.UUID;
 
 @Configuration
-public class RestCustomerClient {
-    private static final String Url = "http://localhost:8080/customer/";
+public class CustomerClient {
 
-    @Bean
-    public RestTemplate restCustomerTemplate() {
-        return new RestTemplate();
-    }
+    @Autowired
+    private FeignCustomerClient customerFeignClient;
 
     public void validateCustomerId(UUID id) {
         try {
-            restCustomerTemplate().getForObject(Url + id.toString(), CustomerResponse.class);
+            this.customerFeignClient.getCustomer(id);
         } catch (HttpClientErrorException e) {
             throw new BadPetitionException("El cliente no fue encontrado en el servicio de cuentas");
         } catch (Exception e) {

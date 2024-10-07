@@ -1,6 +1,6 @@
 package com.danny.CustomerMs.business;
 
-import com.danny.CustomerMs.clients.RestAccountClient;
+import com.danny.CustomerMs.clients.AccountClient;
 import com.danny.CustomerMs.exception.BadPetitionException;
 import com.danny.CustomerMs.exception.ConflictException;
 import com.danny.CustomerMs.exception.NotFoundException;
@@ -23,7 +23,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     CustomerMapper customerMapper;
     @Autowired
-    RestAccountClient accountClient;
+    AccountClient accountClient;
 
     @Override
     public CustomerResponse createCustomer(CustomerRequest customerRequest) {

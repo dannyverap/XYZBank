@@ -2,32 +2,22 @@ package com.danny.CustomerMs.clients;
 
 import com.danny.CustomerMs.exception.BadPetitionException;
 import com.danny.CustomerMs.model.AccountResponse;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.UUID;
 
 @Configuration
-public class RestAccountClient {
-    private static final String Url = "http://localhost:8082/account";
+public class AccountClient {
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
+    @Autowired
+    private FeignAccountClient feignAccountClient;
 
     public List<AccountResponse> getAccountsByClientId(UUID id) {
         try {
-            return restTemplate().exchange(Url + "?clienteId=" + id,
-                                           HttpMethod.GET,
-                                           null,
-                                           new ParameterizedTypeReference<List<AccountResponse>>() {
-                                           }).getBody();
+            return this.feignAccountClient.getAccountsByClientId(id);
         } catch (HttpClientErrorException e) {
             throw new BadPetitionException("Error cuentas no encontradas");
         } catch (Exception e) {
@@ -37,7 +27,7 @@ public class RestAccountClient {
 
     public void DeleteAccount(UUID id) {
         try {
-            restTemplate().delete(Url + "/" + id);
+            this.feignAccountClient.DeleteAccount(id);
         } catch (Exception e) {
             throw new RuntimeException("Error inesperado: " + e.getMessage());
         }

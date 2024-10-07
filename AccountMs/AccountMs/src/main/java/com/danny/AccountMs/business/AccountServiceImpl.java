@@ -1,7 +1,7 @@
 package com.danny.AccountMs.business;
 
-import com.danny.AccountMs.clients.RestCustomerClient;
-import com.danny.AccountMs.clients.RestTransactionClient;
+import com.danny.AccountMs.clients.CustomerClient;
+import com.danny.AccountMs.clients.TransactionClient;
 import com.danny.AccountMs.exception.BadPetitionException;
 import com.danny.AccountMs.exception.NotFoundException;
 import com.danny.AccountMs.model.*;
@@ -23,16 +23,14 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     AccountMapper accountMapper;
     @Autowired
-    RestCustomerClient customerClient;
+    CustomerClient customerClient;
     @Autowired
-    RestTransactionClient restTransactionClient;
+    TransactionClient transactionClient;
 
     @Override
     public AccountResponse createAccount(AccountRequest accountRequest) {
         Account account = this.accountMapper.getAccountFromRequest(accountRequest);
-
         this.customerClient.validateCustomerId(accountRequest.getClienteId());
-
         account.setSaldo(Math.max(accountRequest.getSaldo(), 0.0));
         account.setClienteId(accountRequest.getClienteId());
         account.setNumeroCuenta(this.generateUniqueNumeroCuenta(account.getClienteId(), account.getTipoCuenta()));
@@ -120,8 +118,8 @@ public class AccountServiceImpl implements AccountService {
 
         account.setSaldo(account.getSaldo() + Math.abs(money.getDinero()));
         this.accountRepository.save(account);
-        TransactionResponse transactionResponse = this.restTransactionClient.registerDepositTransaction(money,
-                                                                                                        account.getNumeroCuenta());
+        TransactionResponse transactionResponse = this.transactionClient.registerDepositTransaction(money,
+                                                                                                    account.getNumeroCuenta());
 
         return createApiResponse("Operación exitosa, el nuevo saldo de la cuenta es: " + account.getSaldo() + ". " +
                                          "Transacción registrada con el ID: " + transactionResponse.getId());
@@ -134,8 +132,8 @@ public class AccountServiceImpl implements AccountService {
         double newSaldo = getNewAccountSaldo(account, money.getDinero());
         account.setSaldo(newSaldo);
         this.accountRepository.save(account);
-        TransactionResponse transactionResponse = this.restTransactionClient.registerWithdrawTransaction(money,
-                                                                                                         account.getNumeroCuenta());
+        TransactionResponse transactionResponse = this.transactionClient.registerWithdrawTransaction(money,
+                                                                                                     account.getNumeroCuenta());
         return createApiResponse("Operación exitosa, el nuevo saldo de la cuenta es: " + account.getSaldo() + ". " +
                                          "Transacción registrada con el ID: " + transactionResponse.getId());
     }
@@ -158,7 +156,7 @@ public class AccountServiceImpl implements AccountService {
         this.accountRepository.save(accountDestination);
         this.accountRepository.save(accountDestination);
         TransactionResponse transactionResponse =
-                this.restTransactionClient.registerTransferTransaction(this.accountMapper.convertMoneyTransferToMoney(
+                this.transactionClient.registerTransferTransaction(this.accountMapper.convertMoneyTransferToMoney(
                 moneyTransfer.getDinero()), accountDestination.getNumeroCuenta(), accountOrigin.getNumeroCuenta());
         return createApiResponse("Operación exitosa, el nuevo saldo de la cuenta es: " + accountOrigin.getSaldo() +
                                          ". " + "Transacción registrada con el ID: " + transactionResponse.getId());

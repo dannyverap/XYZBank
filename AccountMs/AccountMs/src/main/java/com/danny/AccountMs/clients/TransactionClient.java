@@ -4,6 +4,7 @@ import com.danny.AccountMs.exception.BadPetitionException;
 import com.danny.AccountMs.model.Money;
 import com.danny.AccountMs.model.TransactionRequest;
 import com.danny.AccountMs.model.TransactionResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -11,8 +12,10 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 
 @Configuration
-public class RestTransactionClient {
-    private static final String Url = "http://localhost:8080/transaction/";
+public class TransactionClient {
+
+    @Autowired
+    private FeignTransactionClient feignTransactionClient;
 
     @Bean
     public RestTemplate restTransactionTemplate() {
@@ -24,7 +27,7 @@ public class RestTransactionClient {
                                                                               TransactionRequest.TipoEnum.DEPOSITO,
                                                                               cuentaDestino,
                                                                               "");
-        return this.sendTransactionRequest(transactionRequest, "deposito");
+        return this.feignTransactionClient.registerDepositTransaction(transactionRequest);
     }
 
     public TransactionResponse registerWithdrawTransaction(Money money, String cuentaDestino) {
@@ -32,7 +35,7 @@ public class RestTransactionClient {
                                                                               TransactionRequest.TipoEnum.RETIRO,
                                                                               cuentaDestino,
                                                                               "");
-        return this.sendTransactionRequest(transactionRequest, "retiro");
+        return this.feignTransactionClient.registerWithdrawTransaction(transactionRequest);
     }
 
     public TransactionResponse registerTransferTransaction(Money money, String cuentaDestino, String cuentaOrigen) {
@@ -40,17 +43,7 @@ public class RestTransactionClient {
                                                                               TransactionRequest.TipoEnum.TRANSFERENCIA,
                                                                               cuentaDestino,
                                                                               cuentaOrigen);
-        return this.sendTransactionRequest(transactionRequest, "transferencia");
-    }
-
-    public TransactionResponse sendTransactionRequest(TransactionRequest transactionRequest, String operation) {
-        try {
-            return this.restTransactionTemplate()
-                       .postForEntity(Url + operation, transactionRequest, TransactionResponse.class)
-                       .getBody();
-        } catch (Exception e) {
-            throw new RuntimeException("Error al registrar la transacción", e);
-        }
+        return this.feignTransactionClient.registerTransferTransaction(transactionRequest);
     }
 
     private TransactionRequest createTransactionRequest(Money money,
