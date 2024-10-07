@@ -48,7 +48,7 @@ public class RestTransactionClient {
             return this.restTransactionTemplate().postForEntity(this.Url + operation, transactionRequest, TransactionResponse.class)
                                     .getBody();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error al registrar la transacción",e);
         }
     }
 
