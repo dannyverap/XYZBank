@@ -22,10 +22,8 @@ public class AccountServiceImpl implements AccountService {
     AccountRepository accountRepository;
     @Autowired
     AccountMapper accountMapper;
-
     @Autowired
     RestCustomerClient customerClient;
-
     @Autowired
     RestTransactionClient restTransactionClient;
 
@@ -133,21 +131,48 @@ public class AccountServiceImpl implements AccountService {
     public ModelApiResponse withdrawMoneyFromAccount(UUID id, Money money) {
         Account account = this.accountRepository.findById(id)
                                                 .orElseThrow(() -> new NotFoundException("Cuenta no encontrada"));
-        double newSaldo = account.getSaldo() - Math.abs(money.getDinero());
-        if (newSaldo < -500) {
-            throw new BadPetitionException("No puede retirar esa cantidad, su saldo actual es de :" + account.getSaldo());
-        }
-
-        if (TipoCuenta.AHORRO.equals(account.getTipoCuenta()) && newSaldo < 0) {
-            throw new BadPetitionException("Su saldo no puede ser menor a 0 en una cuenta de Ahorro. Saldo actual:" + account.getSaldo());
-        }
-
+        double newSaldo = getNewAccountSaldo(account, money.getDinero());
         account.setSaldo(newSaldo);
         this.accountRepository.save(account);
         TransactionResponse transactionResponse = this.restTransactionClient.registerWithdrawTransaction(money,
                                                                                                          account.getNumeroCuenta());
         return createApiResponse("Operación exitosa, el nuevo saldo de la cuenta es: " + account.getSaldo() + ". " +
                                          "Transacción registrada con el ID: " + transactionResponse.getId());
+    }
+
+    @Override
+    public ModelApiResponse transferMoneyBetweenAccounts(UUID id, MoneyTransfer moneyTransfer) {
+        if (moneyTransfer.getDinero() == null || moneyTransfer.getDinero().isNaN()) {
+            throw new BadPetitionException("Ingrese cantidad a transferir");
+        }
+        Account accountOrigin = this.accountRepository.findById(id)
+                                                      .orElseThrow(() -> new NotFoundException("Cuenta de destino no "
+                                                                                                       + "encontrada"));
+        Account accountDestination = this.accountRepository.findById(moneyTransfer.getIdCuentaDestino())
+                                                           .orElseThrow(() -> new NotFoundException(
+                                                                   "Cuenta de origen no encontrada"));
+
+        double newAccountOriginSaldo = getNewAccountSaldo(accountOrigin, moneyTransfer.getDinero());
+        accountOrigin.setSaldo(newAccountOriginSaldo);
+        accountDestination.setSaldo(accountDestination.getSaldo() + Math.abs(moneyTransfer.getDinero()));
+        this.accountRepository.save(accountDestination);
+        this.accountRepository.save(accountDestination);
+        TransactionResponse transactionResponse =
+                this.restTransactionClient.registerTransferTransaction(this.accountMapper.convertMoneyTransferToMoney(
+                moneyTransfer.getDinero()), accountDestination.getNumeroCuenta(), accountOrigin.getNumeroCuenta());
+        return createApiResponse("Operación exitosa, el nuevo saldo de la cuenta es: " + accountOrigin.getSaldo() +
+                                         ". " + "Transacción registrada con el ID: " + transactionResponse.getId());
+    }
+
+    private static double getNewAccountSaldo(Account accountOrigin, Double money) {
+        double newAccountOriginSaldo = accountOrigin.getSaldo() - Math.abs(money);
+        if (newAccountOriginSaldo < -500) {
+            throw new BadPetitionException("No puede retirar esa cantidad, su saldo actual es de :" + accountOrigin.getSaldo());
+        }
+        if (TipoCuenta.AHORRO.equals(accountOrigin.getTipoCuenta()) && newAccountOriginSaldo < 0) {
+            throw new BadPetitionException("Su saldo no puede ser menor a 0 en una cuenta de Ahorro. Saldo actual:" + accountOrigin.getSaldo());
+        }
+        return newAccountOriginSaldo;
     }
 
     private ModelApiResponse createApiResponse(String message) {
