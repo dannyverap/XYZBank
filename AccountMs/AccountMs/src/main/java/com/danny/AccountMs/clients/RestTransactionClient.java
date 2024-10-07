@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 @Configuration
 public class RestTransactionClient {
-    String Url = "http://localhost:8080/transaction/";
+    private static final String Url = "http://localhost:8080/transaction/";
 
     @Bean
     public RestTemplate restTransactionTemplate() {
@@ -24,13 +24,7 @@ public class RestTransactionClient {
                                                                               TransactionRequest.TipoEnum.DEPOSITO,
                                                                               cuentaDestino,
                                                                               "");
-        try {
-            return this.restTransactionTemplate()
-                       .postForEntity(this.Url + "deposito", transactionRequest, TransactionResponse.class)
-                       .getBody();
-        } catch (Exception e) {
-            throw new BadPetitionException("Error cuentas no encontradas");
-        }
+        return this.sendTransactionRequest(transactionRequest, "deposito");
     }
 
     public TransactionResponse registerWithdrawTransaction(Money money, String cuentaDestino) {
@@ -38,13 +32,7 @@ public class RestTransactionClient {
                                                                               TransactionRequest.TipoEnum.RETIRO,
                                                                               cuentaDestino,
                                                                               "");
-        try {
-            return this.restTransactionTemplate()
-                       .postForEntity(this.Url + "retiro", transactionRequest, TransactionResponse.class)
-                       .getBody();
-        } catch (Exception e) {
-            throw new BadPetitionException("Error cuentas no encontradas");
-        }
+        return this.sendTransactionRequest(transactionRequest, "retiro");
     }
 
     public TransactionResponse registerTransferTransaction(Money money, String cuentaDestino, String cuentaOrigen) {
@@ -52,12 +40,15 @@ public class RestTransactionClient {
                                                                               TransactionRequest.TipoEnum.TRANSFERENCIA,
                                                                               cuentaDestino,
                                                                               cuentaOrigen);
+        return this.sendTransactionRequest(transactionRequest, "transferencia");
+    }
+
+    public TransactionResponse sendTransactionRequest(TransactionRequest transactionRequest, String operation) {
         try {
-            return this.restTransactionTemplate()
-                       .postForEntity(this.Url + "transferencia", transactionRequest, TransactionResponse.class)
-                       .getBody();
+            return this.restTransactionTemplate().postForEntity(this.Url + operation, transactionRequest, TransactionResponse.class)
+                                    .getBody();
         } catch (Exception e) {
-            throw new BadPetitionException("Error cuentas no encontradas");
+            throw new RuntimeException(e);
         }
     }
 
@@ -65,14 +56,16 @@ public class RestTransactionClient {
                                                         TransactionRequest.TipoEnum tipoTransaction,
                                                         String cuentaDestino,
                                                         String cuentaOrigen) {
+
+        if (tipoTransaction.equals(TransactionRequest.TipoEnum.TRANSFERENCIA) && (cuentaOrigen == null || cuentaOrigen.isBlank())) {
+            throw new BadPetitionException("Ingrese la cuenta de Origen");
+        }
         TransactionRequest transactionRequest = new TransactionRequest();
         transactionRequest.setMonto(money.getDinero());
         transactionRequest.setCuentaDestino(cuentaDestino);
         transactionRequest.setTipo(tipoTransaction);
         transactionRequest.setFecha(LocalDate.now());
-        if (tipoTransaction.equals(TransactionRequest.TipoEnum.TRANSFERENCIA) && (cuentaOrigen == null || cuentaOrigen.isBlank())) {
-            throw new BadPetitionException("Ingrese la cuenta de Origen");
-        }
+
         return transactionRequest;
     }
 }
