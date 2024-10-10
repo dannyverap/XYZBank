@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -32,7 +33,7 @@ public class AccountServiceImplTest {
     @Mock
     private AccountRepository accountRepository;
 
-    @Mock
+    @Spy
     private AccountMapper accountMapper;
 
     @Mock
@@ -59,10 +60,8 @@ public class AccountServiceImplTest {
     @DisplayName("Test crear cuenta")
     public void testCreateAccount() {
         doNothing().when(customerClient).validateCustomerId(accountRequest.getClienteId());
-        given(accountMapper.getAccountFromRequest(accountRequest)).willReturn(account);
-        given(accountRepository.save(any(Account.class))).willReturn(account);
-        given(accountMapper.getAccountResponseFromAccount(account)).willReturn(accountResponse);
 
+        given(accountRepository.save(any(Account.class))).willReturn(account);
         AccountResponse response = accountService.createAccount(accountRequest);
 
         assertNotNull(response);
@@ -71,7 +70,7 @@ public class AccountServiceImplTest {
     @Test
     @DisplayName("Test crear cuenta - Arroja error cuando no se encuentra el cliente")
     public void testCreateAccount_ThrowsErrorWhenCustomerNotFound() {
-        given(accountMapper.getAccountFromRequest(accountRequest)).willReturn(account);
+
         doThrow(new BadPetitionException("El cliente no fue encontrado en el servicio de cuentas")).when(customerClient)
                                                                                                    .validateCustomerId(
                                                                                                            any(UUID.class));
@@ -88,7 +87,7 @@ public class AccountServiceImplTest {
     @DisplayName("Test obtener detalles de una cuenta")
     public void testGetAccountDetails() {
         given(accountRepository.findById(account.getId())).willReturn(Optional.of(account));
-        given(accountMapper.getAccountResponseFromAccount(account)).willReturn(accountResponse);
+
 
         AccountResponse response = accountService.getAccountDetails(account.getId());
 
@@ -105,7 +104,6 @@ public class AccountServiceImplTest {
 
 
         given(accountRepository.findByClienteId(clienteId, PageRequest.of(0, 20))).willReturn(accountPage);
-        given(accountMapper.getAccountResponseFromAccount(account)).willReturn(accountResponse);
 
 
         List<AccountResponse> responses = accountService.getAccounts(20, 0, clienteId);
@@ -124,7 +122,7 @@ public class AccountServiceImplTest {
 
 
         given(accountRepository.findAll(PageRequest.of(0, 20))).willReturn(accountPage);
-        given(accountMapper.getAccountResponseFromAccount(account)).willReturn(accountResponse);
+
 
         List<AccountResponse> responses = accountService.getAccounts(20, 0, null);
 
@@ -138,9 +136,9 @@ public class AccountServiceImplTest {
     @DisplayName("Test actualizar cuenta")
     public void testUpdateAccount() {
         given(accountRepository.findById(account.getId())).willReturn(Optional.of(account));
-        given(accountMapper.getAccountFromRequest(accountRequest)).willReturn(account);
+
         given(accountRepository.save(account)).willReturn(account);
-        given(accountMapper.getAccountResponseFromAccount(account)).willReturn(accountResponse);
+
         AccountResponse updatedAccount = accountService.updateAccount(account.getId(), accountRequest);
         assertNotNull(updatedAccount);
         assertEquals(account.getSaldo(), updatedAccount.getSaldo());
@@ -325,7 +323,6 @@ public class AccountServiceImplTest {
 
         Money money = new Money();
         money.setDinero(moneyTransfer.getDinero());
-        given(accountMapper.convertMoneyTransferToMoney(moneyTransfer.getDinero())).willReturn(money);
 
         given(transactionClient.registerTransferTransaction(any(Money.class),
                                                             eq(accountDestination.getNumeroCuenta()),
