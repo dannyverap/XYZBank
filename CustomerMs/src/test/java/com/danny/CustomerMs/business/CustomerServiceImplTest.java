@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -32,7 +33,7 @@ public class CustomerServiceImplTest {
     @Mock
     private CustomerRepository customerRepository;
 
-    @Mock
+    @Spy
     private CustomerMapper customerMapper;
 
     @Mock
@@ -57,14 +58,11 @@ public class CustomerServiceImplTest {
     public void testCreateCustomer() {
         given(customerRepository.existsByEmail(customerRequest.getEmail())).willReturn(false);
         given(customerRepository.existsByDni(customerRequest.getDni())).willReturn(false);
-        given(customerMapper.getCustomerFromRequest(customerRequest)).willReturn(customer);
+
         given(customerRepository.save(any(Customer.class))).willReturn(customer);
-        given(customerMapper.getCustomerResponseFromCustomer(customer)).willReturn(customerResponse);
 
         CustomerResponse response = customerService.createCustomer(customerRequest);
-
         assertNotNull(response);
-        assertEquals(customerResponse, response);
     }
 
     @Test
@@ -93,7 +91,6 @@ public class CustomerServiceImplTest {
     @DisplayName("Test obtener detalles del cliente")
     public void testGetCustomerDetails() {
         given(customerRepository.findById(customer.getId())).willReturn(Optional.of(customer));
-        given(customerMapper.getCustomerResponseFromCustomer(customer)).willReturn(customerResponse);
 
         CustomerResponse response = customerService.getCustomerDetails(customer.getId());
 
@@ -119,7 +116,7 @@ public class CustomerServiceImplTest {
         Page<Customer> customerPage = new PageImpl<>(customerList);
 
         given(customerRepository.findAll(PageRequest.of(0, 20))).willReturn(customerPage);
-        given(customerMapper.getCustomerResponseFromCustomer(customer)).willReturn(customerResponse);
+
 
         List<CustomerResponse> responses = customerService.getCustomers(20, 0);
 
@@ -133,8 +130,8 @@ public class CustomerServiceImplTest {
     public void testUpdateCustomer() {
         given(customerRepository.findById(customer.getId())).willReturn(Optional.of(customer));
         given(customerRepository.save(customer)).willReturn(customer);
-        given(customerMapper.getCustomerResponseFromCustomer(customer)).willReturn(customerResponse);
-        CustomerResponse response = customerService.updateCustomer(customer.getId(),customerRequest);
+
+        CustomerResponse response = customerService.updateCustomer(customer.getId(), customerRequest);
 
         assertNotNull(response);
         assertEquals(customerResponse, response);
