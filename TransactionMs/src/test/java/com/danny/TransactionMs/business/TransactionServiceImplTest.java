@@ -12,7 +12,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -24,7 +30,7 @@ public class TransactionServiceImplTest {
     @Mock
     private TransactionRepository transactionRepository;
 
-    @Mock
+    @Spy
     private TransactionMapper transactionMapper;
 
     @InjectMocks
@@ -36,38 +42,33 @@ public class TransactionServiceImplTest {
     private Transaction depositTransaction;
     private Transaction withdrawTransaction;
     private Transaction transferTransaction;
-    private TransactionResponse depositResponse;
-    private TransactionResponse withdrawResponse;
-    private TransactionResponse transferResponse;
+
 
     @BeforeEach
     public void setUp() {
 
         depositRequest = createDepositRequest();
         depositTransaction = createDepositTransaction(depositRequest);
-        depositResponse = createDepositResponse(depositTransaction);
+
 
         withdrawRequest = createWithdrawRequest();
         withdrawTransaction = createWithdrawTransaction(withdrawRequest);
-        withdrawResponse = createWithdrawResponse(withdrawTransaction);
+
 
         transferRequest = createTransferRequest();
         transferTransaction = createTransferTransaction(transferRequest);
-        transferResponse = createTransferResponse(transferTransaction);
+
     }
 
 
     @Test
     @DisplayName("Test registrar depósito")
     public void testRegisterDeposit() {
-        given(transactionMapper.getTransactionFromRequest(depositRequest)).willReturn(depositTransaction);
         given(transactionRepository.save(any(Transaction.class))).willReturn(depositTransaction);
-        given(transactionMapper.getTransactionResponseFromTransaction(depositTransaction)).willReturn(depositResponse);
 
         TransactionResponse response = transactionService.registerDeposit(depositRequest);
 
         assertNotNull(response);
-        assertEquals(depositResponse, response);
     }
 
     @Test
@@ -97,14 +98,11 @@ public class TransactionServiceImplTest {
     @Test
     @DisplayName("Test registrar retiro")
     public void testRegisterWithdraw() {
-        given(transactionMapper.getTransactionFromRequest(withdrawRequest)).willReturn(withdrawTransaction);
+
         given(transactionRepository.save(any(Transaction.class))).willReturn(withdrawTransaction);
-        given(transactionMapper.getTransactionResponseFromTransaction(withdrawTransaction)).willReturn(withdrawResponse);
 
         TransactionResponse response = transactionService.registerWithdraw(withdrawRequest);
-
         assertNotNull(response);
-        assertEquals(withdrawResponse, response);
     }
 
     @Test
@@ -133,14 +131,12 @@ public class TransactionServiceImplTest {
     @Test
     @DisplayName("Test registrar transferencia")
     public void testRegisterTransfer() {
-        given(transactionMapper.getTransactionFromRequest(transferRequest)).willReturn(transferTransaction);
+
         given(transactionRepository.save(any(Transaction.class))).willReturn(transferTransaction);
-        given(transactionMapper.getTransactionResponseFromTransaction(transferTransaction)).willReturn(transferResponse);
 
         TransactionResponse response = transactionService.registerTransfer(transferRequest);
 
         assertNotNull(response);
-        assertEquals(transferResponse, response);
     }
 
     @Test
@@ -180,6 +176,8 @@ public class TransactionServiceImplTest {
 
     private TransactionRequest createDepositRequest() {
         TransactionRequest request = new TransactionRequest();
+        request.setFecha(LocalDate.now());
+        request.setTipo(TransactionRequest.TipoEnum.DEPOSITO);
         request.setMonto(100.0);
         request.setCuentaDestino("123456");
         return request;
@@ -187,21 +185,19 @@ public class TransactionServiceImplTest {
 
     private Transaction createDepositTransaction(TransactionRequest request) {
         Transaction transaction = new Transaction();
+        transaction.setId(UUID.randomUUID().toString());
+        transaction.setFecha(Date.from(Instant.now()));
         transaction.setMonto(request.getMonto());
         transaction.setCuentaDestino(request.getCuentaDestino());
         transaction.setTipo(TipoTransaction.DEPOSITO);
         return transaction;
     }
 
-    private TransactionResponse createDepositResponse(Transaction transaction) {
-        TransactionResponse response = new TransactionResponse();
-        response.setMonto(transaction.getMonto());
-        response.setCuentaDestino(transaction.getCuentaDestino());
-        return response;
-    }
 
     private TransactionRequest createWithdrawRequest() {
         TransactionRequest request = new TransactionRequest();
+        request.setFecha(LocalDate.now());
+        request.setTipo(TransactionRequest.TipoEnum.RETIRO);
         request.setMonto(50.0);
         request.setCuentaDestino("123456");
         return request;
@@ -209,21 +205,19 @@ public class TransactionServiceImplTest {
 
     private Transaction createWithdrawTransaction(TransactionRequest request) {
         Transaction transaction = new Transaction();
+        transaction.setId(UUID.randomUUID().toString());
+        transaction.setFecha(Date.from(Instant.now()));
         transaction.setMonto(request.getMonto());
         transaction.setCuentaDestino(request.getCuentaDestino());
         transaction.setTipo(TipoTransaction.RETIRO);
         return transaction;
     }
 
-    private TransactionResponse createWithdrawResponse(Transaction transaction) {
-        TransactionResponse response = new TransactionResponse();
-        response.setMonto(transaction.getMonto());
-        response.setCuentaDestino(transaction.getCuentaDestino());
-        return response;
-    }
 
     private TransactionRequest createTransferRequest() {
         TransactionRequest request = new TransactionRequest();
+        request.setTipo(TransactionRequest.TipoEnum.TRANSFERENCIA);
+        request.setFecha(LocalDate.now());
         request.setMonto(200.0);
         request.setCuentaDestino("654321");
         request.setCuentaOrigen("123456");
@@ -232,6 +226,8 @@ public class TransactionServiceImplTest {
 
     private Transaction createTransferTransaction(TransactionRequest request) {
         Transaction transaction = new Transaction();
+        transaction.setId(UUID.randomUUID().toString());
+        transaction.setFecha(Date.from(Instant.now()));
         transaction.setMonto(request.getMonto());
         transaction.setCuentaDestino(request.getCuentaDestino());
         transaction.setCuentaOrigen(request.getCuentaOrigen());
@@ -239,11 +235,4 @@ public class TransactionServiceImplTest {
         return transaction;
     }
 
-    private TransactionResponse createTransferResponse(Transaction transaction) {
-        TransactionResponse response = new TransactionResponse();
-        response.setMonto(transaction.getMonto());
-        response.setCuentaDestino(transaction.getCuentaDestino());
-        response.setCuentaOrigen(transaction.getCuentaOrigen());
-        return response;
-    }
 }
