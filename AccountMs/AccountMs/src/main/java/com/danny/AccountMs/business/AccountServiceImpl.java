@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
@@ -45,13 +46,9 @@ public class AccountServiceImpl implements AccountService {
         limit = (0 >= limit) ? 20 : limit;
 
         Pageable pageable = PageRequest.of(offset, limit);
-        Page<Account> accounts;
-
-        if (clienteId != null) {
-            accounts = this.accountRepository.findByClienteId(clienteId, pageable);
-        } else {
-            accounts = this.accountRepository.findAll(pageable);
-        }
+        Page<Account> accounts = Optional.ofNullable(clienteId)
+                                         .map(id -> accountRepository.findByClienteId(id, pageable))
+                                         .orElseGet(() -> accountRepository.findAll(pageable));
         return accounts.stream().map(this.accountMapper::getAccountResponseFromAccount).toList();
     }
 
@@ -162,7 +159,7 @@ public class AccountServiceImpl implements AccountService {
                                          ". " + "Transacción registrada con el ID: " + transactionResponse.getId());
     }
 
-    private static double getNewAccountSaldo(Account accountOrigin, Double money) {
+    private double getNewAccountSaldo(Account accountOrigin, Double money) {
         double newAccountOriginSaldo = accountOrigin.getSaldo() - Math.abs(money);
         if (newAccountOriginSaldo < -500) {
             throw new BadPetitionException("No puede retirar esa cantidad, su saldo actual es de :" + accountOrigin.getSaldo());
