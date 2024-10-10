@@ -64,8 +64,6 @@ public class TransactionServiceImpl implements TransactionService {
         }
         Transaction transaction = this.transactionMapper.getTransactionFromRequest(transferRequest);
         transaction.setTipo(TipoTransaction.TRANSFERENCIA);
-        //DateTime a = DateTime.now();
-        //transaction.setFecha(a.toDate())
         return this.transactionMapper.getTransactionResponseFromTransaction(this.transactionRepository.save(transaction));
     }
 
