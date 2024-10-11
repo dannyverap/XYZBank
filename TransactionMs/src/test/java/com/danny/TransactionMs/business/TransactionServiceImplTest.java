@@ -18,8 +18,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
+import static java.lang.Double.NaN;
+import static java.lang.Double.valueOf;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -73,8 +77,19 @@ public class TransactionServiceImplTest {
 
     @Test
     @DisplayName("Test registrar depósito - Arroja error cuando el monto es nulo")
-    public void testRegisterDeposit_ThrowsErrorWhenMontoIsNull() {
+    public void testRegisterDepositThrowsErrorWhenMontoIsNull() {
         depositRequest.setMonto(null);
+
+        BadPetitionException exception = assertThrows(BadPetitionException.class,
+                                                      () -> transactionService.registerDeposit(depositRequest));
+
+        assertEquals("Introduzca un monto", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Test registrar depósito - Arroja error cuando el monto no es un número")
+    public void testRegisterDepositThrowsErrorWhenMontoIsNotANumber() {
+        depositRequest.setMonto(NaN);
 
         BadPetitionException exception = assertThrows(BadPetitionException.class,
                                                       () -> transactionService.registerDeposit(depositRequest));
@@ -85,8 +100,18 @@ public class TransactionServiceImplTest {
 
     @Test
     @DisplayName("Test registrar depósito - Arroja error cuando cuenta destino es nula")
-    public void testRegisterDeposit_ThrowsErrorWhenCuentaDestinoIsEmpty() {
+    public void testRegisterDepositThrowsErrorWhenCuentaDestinoIsEmpty() {
         depositRequest.setCuentaDestino("");
+
+        BadPetitionException exception = assertThrows(BadPetitionException.class,
+                                                      () -> transactionService.registerDeposit(depositRequest));
+
+        assertEquals("Introduzca cuenta de destino", exception.getMessage());
+    }
+    @Test
+    @DisplayName("Test registrar depósito - Arroja error cuando cuenta destino es blanco")
+    public void testRegisterDepositThrowsErrorWhenCuentaDestinoIsBlankEmpty() {
+        depositRequest.setCuentaDestino("      ");
 
         BadPetitionException exception = assertThrows(BadPetitionException.class,
                                                       () -> transactionService.registerDeposit(depositRequest));
@@ -107,7 +132,7 @@ public class TransactionServiceImplTest {
 
     @Test
     @DisplayName("Test registrar retiro - Arroja error cuando el monto es nulo")
-    public void testRegisterWithdraw_ThrowsErrorWhenMontoIsNull() {
+    public void testRegisterWithdrawThrowsErrorWhenMontoIsNull() {
         withdrawRequest.setMonto(null);
 
         BadPetitionException exception = assertThrows(BadPetitionException.class,
@@ -119,7 +144,7 @@ public class TransactionServiceImplTest {
 
     @Test
     @DisplayName("Test registrar retiro - Arroja error cuando cuenta destino es nula")
-    public void testRegisterWithdraw_ThrowsErrorWhenCuentaDestinoIsEmpty() {
+    public void testRegisterWithdrawThrowsErrorWhenCuentaDestinoIsEmpty() {
         withdrawRequest.setCuentaDestino("");
 
         BadPetitionException exception = assertThrows(BadPetitionException.class,
@@ -141,7 +166,7 @@ public class TransactionServiceImplTest {
 
     @Test
     @DisplayName("Test registrar transferencia - Arroja error cuando el monto es nulo")
-    public void testRegisterTransfer_ThrowsErrorWhenMontoIsNull() {
+    public void testRegisterTransferThrowsErrorWhenMontoIsNull() {
         transferRequest.setMonto(null);
 
         BadPetitionException exception = assertThrows(BadPetitionException.class,
@@ -153,7 +178,7 @@ public class TransactionServiceImplTest {
 
     @Test
     @DisplayName("Test registrar transferencia - Arroja error cuando cuenta destino es nula")
-    public void testRegisterTransfer_ThrowsErrorWhenCuentaDestinoIsEmpty() {
+    public void testRegisterTransferThrowsErrorWhenCuentaDestinoIsEmpty() {
         transferRequest.setCuentaDestino("");
 
         BadPetitionException exception = assertThrows(BadPetitionException.class,
@@ -164,7 +189,7 @@ public class TransactionServiceImplTest {
 
     @Test
     @DisplayName("Test registrar transferencia - Arroja error cuando cuenta origen es nula")
-    public void testRegisterTransfer_ThrowsErrorWhenCuentaOrigenIsEmpty() {
+    public void testRegisterTransferThrowsErrorWhenCuentaOrigenIsEmpty() {
         transferRequest.setCuentaOrigen("");
 
         BadPetitionException exception = assertThrows(BadPetitionException.class,
@@ -173,6 +198,17 @@ public class TransactionServiceImplTest {
         assertEquals("Introduzca cuenta de origen", exception.getMessage());
     }
 
+    @Test
+    @DisplayName("Obtener historial de transacciones")
+    public void testGetTransactions() {
+        given(transactionRepository.findAll()).willReturn(Arrays.asList(depositTransaction,
+                                                                        withdrawTransaction,
+                                                                        transferTransaction));
+
+        List<TransactionResponse> response = transactionService.getTransactions();
+        assertNotNull(response);
+        assertEquals(3, response.size());
+    }
 
     private TransactionRequest createDepositRequest() {
         TransactionRequest request = new TransactionRequest();
