@@ -11,7 +11,7 @@ public class AccountMapper {
         account.setSaldo(accountRequest.getSaldo());
         account.setTipoCuenta(this.mapToEnumModel(accountRequest.getTipoCuenta()));
         account.setClienteId(accountRequest.getClienteId());
-        account.setNumeroCuenta(account.getNumeroCuenta());
+        account.setNumeroCuenta(accountRequest.getNumeroCuenta());
         return account;
     }
 
@@ -26,6 +26,9 @@ public class AccountMapper {
     }
 
     public AccountResponse.TipoCuentaEnum mapToEnumResponse(TipoCuenta tipoEnum) {
+        if (tipoEnum == null) {
+            throw new BadPetitionException("Tipo de cuenta no puede ser null");
+        }
         if (tipoEnum.equals(TipoCuenta.AHORRO)) {
             return AccountResponse.TipoCuentaEnum.AHORRO;
         }
@@ -36,6 +39,9 @@ public class AccountMapper {
     }
 
     public TipoCuenta mapToEnumModel(AccountRequest.TipoCuentaEnum tipoEnum) {
+        if (tipoEnum == null) {
+            throw new BadPetitionException("Tipo de cuenta no puede ser null");
+        }
         if (tipoEnum.equals(AccountRequest.TipoCuentaEnum.AHORRO)) {
             return TipoCuenta.AHORRO;
         }
