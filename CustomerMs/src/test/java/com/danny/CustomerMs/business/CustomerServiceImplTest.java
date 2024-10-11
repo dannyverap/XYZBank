@@ -126,10 +126,85 @@ public class CustomerServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test listar clientes - límite negativo")
+    public void testGetCustomersWithNegativeLimit() {
+        List<Customer> customerList = List.of(customer);
+        Page<Customer> accountPage = new PageImpl<>(customerList);
+
+        given(customerRepository.findAll(PageRequest.of(0, 20))).willReturn(accountPage);
+        given(customerMapper.getCustomerResponseFromCustomer(customer)).willReturn(customerResponse);
+
+        List<CustomerResponse> responses = customerService.getCustomers(-5, 0);
+
+        assertNotNull(responses);
+        assertEquals(1, responses.size());
+        assertEquals(customerResponse, responses.get(0));
+    }
+
+    @Test
     @DisplayName("Test actualizar cliente")
     public void testUpdateCustomer() {
         given(customerRepository.findById(customer.getId())).willReturn(Optional.of(customer));
         given(customerRepository.save(customer)).willReturn(customer);
+
+        CustomerResponse response = customerService.updateCustomer(customer.getId(), customerRequest);
+
+        assertNotNull(response);
+        assertEquals(customerResponse, response);
+    }
+
+    @Test
+    @DisplayName("Test actualizar cliente - cliente no encontrado")
+    public void testUpdateCustomerNotFound() {
+        UUID id = UUID.randomUUID();
+        given(customerRepository.findById(id)).willReturn(Optional.empty());
+
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            customerService.updateCustomer(id, customerRequest);
+        });
+
+        assertEquals("Not found", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Test actualizar cliente - email ya registrado")
+    public void testUpdateCustomerEmailConflict() {
+        customerRequest.setEmail("newemail@example.com");
+        given(customerRepository.findById(customer.getId())).willReturn(Optional.of(customer));
+        given(customerRepository.existsByEmail(customerRequest.getEmail())).willReturn(true);
+
+        BadPetitionException exception = assertThrows(BadPetitionException.class, () -> {
+            customerService.updateCustomer(customer.getId(), customerRequest);
+        });
+
+        assertEquals("Email ya registrado en otro usuario", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Test actualizar cliente - DNI ya registrado")
+    public void testUpdateCustomerDniConflict() {
+        customerRequest.setDni("87654321");
+        given(customerRepository.findById(customer.getId())).willReturn(Optional.of(customer));
+        given(customerRepository.existsByDni(customerRequest.getDni())).willReturn(true);
+
+        BadPetitionException exception = assertThrows(BadPetitionException.class, () -> {
+            customerService.updateCustomer(customer.getId(), customerRequest);
+        });
+
+        assertEquals("DNI ya registrado en otro usuario", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Test actualizar cliente - éxito con cambios")
+    public void testUpdateCustomerChangeNombre() {
+        customerRequest.setNombre("Danny");
+        customerRequest.setApellido("NTT");
+        customerRequest.setEmail("ntt@example.com");
+        customerResponse.setDni("77020212");
+
+        given(customerRepository.findById(customer.getId())).willReturn(Optional.of(customer));
+        given(customerRepository.save(customer)).willReturn(customer);
+        given(customerMapper.getCustomerResponseFromCustomer(customer)).willReturn(customerResponse);
 
         CustomerResponse response = customerService.updateCustomer(customer.getId(), customerRequest);
 
