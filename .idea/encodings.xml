@@ -8,5 +8,6 @@
     <file url="file://$PROJECT_DIR$/Gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ServiceReg/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/TransactionMs/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/TransactionMs/target/generated-sources/openapi/src/main/java" charset="UTF-8" />
   </component>
 </project>
