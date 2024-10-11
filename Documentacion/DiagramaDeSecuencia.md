@@ -358,16 +358,16 @@ sequenceDiagram
 sequenceDiagram
     title Registrar un depósito
     autonumber
-    participant MsCliente as MicroServicio Clientes
+    participant MsCuenta as MicroServicio Cuentas
     participant MsTransaction as MicroServicio Transacciones
     participant TransactionDb as Base de Datos NoSQL de transacciones
     activate MsTransaction
-    MsCliente ->> MsTransaction: Solicitud para registrar depósito
+    MsCuenta ->> MsTransaction: Solicitud para registrar depósito
     activate TransactionDb
     MsTransaction ->> TransactionDb: Registrar depósito
     TransactionDb -->> MsTransaction: Confirmación de almacenamiento
     deactivate TransactionDb
-    MsTransaction -->> MsCliente: Respuesta de éxito o error
+    MsTransaction -->> MsCuenta: Respuesta de éxito o error
     deactivate MsTransaction
 ```
 
@@ -377,16 +377,16 @@ sequenceDiagram
 sequenceDiagram
     title Registrar un retiro
     autonumber
-    participant MsCliente as MicroServicio Clientes
+    participant MsCuenta as MicroServicio Cuentas
     participant MsTransaction as MicroServicio Transacciones
     participant TransactionDb as Base de Datos NoSQL de transacciones
     activate MsTransaction
-    MsCliente ->> MsTransaction: Solicitud para registrar retiro
+    MsCuenta ->> MsTransaction: Solicitud para registrar retiro
     activate TransactionDb
     MsTransaction ->> TransactionDb: Registrar retiro
     TransactionDb -->> MsTransaction: Confirmación de almacenamiento
     deactivate TransactionDb
-    MsTransaction -->> MsCliente: Respuesta de éxito o error
+    MsTransaction -->> MsCuenta: Respuesta de éxito o error
     deactivate MsTransaction
 ```
 
@@ -396,16 +396,16 @@ sequenceDiagram
 sequenceDiagram
     title Registrar un transferencia
     autonumber
-    participant MsCliente as MicroServicio Clientes
+    participant MsCuenta as MicroServicio Cuentas
     participant MsTransaction as MicroServicio Transacciones
     participant TransactionDb as Base de Datos NoSQL de transacciones
     activate MsTransaction
-    MsCliente ->> MsTransaction: Solicitud para registrar transferencia
+    MsCuenta ->> MsTransaction: Solicitud para registrar transferencia
     activate TransactionDb
     MsTransaction ->> TransactionDb: Registrar transferencia
     TransactionDb -->> MsTransaction: Confirmación de transferencia
     deactivate TransactionDb
-    MsTransaction -->> MsCliente: Respuesta de éxito o error
+    MsTransaction -->> MsCuenta: Respuesta de éxito o error
     deactivate MsTransaction
 ```
 ### Obtener historial de transacciones
@@ -415,15 +415,15 @@ sequenceDiagram
 sequenceDiagram
     title Obtener historial de transacciones
     autonumber
-    participant MsCliente as MicroServicio Clientes
+    participant MsCuenta as MicroServicio Cuentas
     participant MsTransaction as MicroServicio Transacciones
     participant TransactionDb as Base de Datos NoSQL de transacciones
     activate MsTransaction
-    MsCliente ->> MsTransaction: Solicitud para obtener historial de transferencias
+    MsCuenta ->> MsTransaction: Solicitud para obtener historial de transferencias
     activate TransactionDb
     MsTransaction ->> TransactionDb: Obtener transferencias
     TransactionDb -->> MsTransaction: Enviar registros de transferencias
     deactivate TransactionDb
-    MsTransaction -->> MsCliente: Respuesta de éxito o error
+    MsTransaction -->> MsCuenta: Respuesta de éxito o error
     deactivate MsTransaction
 ```
