@@ -8,7 +8,7 @@ Este sistema gestiona transacciones bancarias entre cuentas de clientes, permiti
 - [Diagramas de Secuencia](Documentacion%2FDiagramaDeSecuencia.md)
 - [Diagrama de Componentes](Documentacion%2FDiagramaDeComponente.md)
 - [Documentación OpenAPI](Documentacion%2Fswagger.md)
-
+- [TestCoverage con Jacoco](Documentacion%2FTestCoverage.md)
 > **Nota**: Para visualizar los diagramas de secuencia, descarga el siguiente plugin:  
 ![img.png](img.png)
 
@@ -33,6 +33,8 @@ Este sistema gestiona transacciones bancarias entre cuentas de clientes, permiti
 
 - **H2 Database**: Base de datos relacional en memoria para pruebas usado para los servicios AccountMS y CustomerMS
 - **MongoDB**: Base de datos no relacional usado para registrar las operaciones bancarias entre cuentas
+> [!IMPORTANT]  
+> Tener instalado mongo para utilizar el sevicio transactions
 ## Reglas de Negocio
 
 1. **Validaciones de Cliente:**
