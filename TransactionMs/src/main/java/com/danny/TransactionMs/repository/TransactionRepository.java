@@ -1,7 +1,0 @@
-package com.danny.TransactionMs.repository;
-
-import com.danny.TransactionMs.model.Transaction;
-import org.springframework.data.mongodb.repository.MongoRepository;
-
-public interface TransactionRepository extends MongoRepository<Transaction, String> {
-}
