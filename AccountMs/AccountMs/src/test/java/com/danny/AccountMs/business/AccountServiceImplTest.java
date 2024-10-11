@@ -3,6 +3,7 @@ package com.danny.AccountMs.business;
 import com.danny.AccountMs.clients.CustomerClient;
 import com.danny.AccountMs.clients.TransactionClient;
 import com.danny.AccountMs.exception.BadPetitionException;
+import com.danny.AccountMs.exception.NotFoundException;
 import com.danny.AccountMs.model.*;
 import com.danny.AccountMs.repository.AccountRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -96,6 +97,18 @@ public class AccountServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test obtener detalles de una cuenta - Arroja error cuando la cuenta no existe")
+    public void testGetAccountDetailsT() {
+        given(accountRepository.findById(account.getId())).willReturn(Optional.empty());
+
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            accountService.getAccountDetails(account.getId());
+        });
+
+        assertEquals("Cuenta no encontrada", exception.getMessage());
+    }
+
+    @Test
     @DisplayName("Test listar cuentas - con clienteId")
     public void testGetAccountsWithClienteId() {
         UUID clienteId = UUID.randomUUID();
@@ -115,14 +128,27 @@ public class AccountServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test listar cuentas - límite negativo")
+    public void testGetAccountsWithNegativeLimit() {
+        List<Account> accountList = List.of(account);
+        Page<Account> accountPage = new PageImpl<>(accountList);
+
+        given(accountRepository.findAll(PageRequest.of(0, 20))).willReturn(accountPage);
+        given(accountMapper.getAccountResponseFromAccount(account)).willReturn(accountResponse);
+
+        List<AccountResponse> responses = accountService.getAccounts(-5, 0, null);
+
+        assertNotNull(responses);
+        assertEquals(1, responses.size());
+        assertEquals(accountResponse, responses.get(0));
+    }
+
+    @Test
     @DisplayName("Test listar cuentas - sin clienteId")
     public void testGetAccountsWithoutClienteId() {
         List<Account> accountList = List.of(account);
         Page<Account> accountPage = new PageImpl<>(accountList);
-
-
         given(accountRepository.findAll(PageRequest.of(0, 20))).willReturn(accountPage);
-
 
         List<AccountResponse> responses = accountService.getAccounts(20, 0, null);
 
@@ -135,14 +161,65 @@ public class AccountServiceImplTest {
     @Test
     @DisplayName("Test actualizar cuenta")
     public void testUpdateAccount() {
+        accountRequest.setNumeroCuenta("nttcuenta");
+        accountRequest.setTipoCuenta(AccountRequest.TipoCuentaEnum.CORRIENTE);
+        accountRequest.setSaldo(500.0);
         given(accountRepository.findById(account.getId())).willReturn(Optional.of(account));
-
         given(accountRepository.save(account)).willReturn(account);
+        given(accountRepository.existsByNumeroCuenta(accountRequest.getNumeroCuenta())).willReturn(false);
 
         AccountResponse updatedAccount = accountService.updateAccount(account.getId(), accountRequest);
         assertNotNull(updatedAccount);
-        assertEquals(account.getSaldo(), updatedAccount.getSaldo());
+        assertEquals(account.getNumeroCuenta(), updatedAccount.getNumeroCuenta());
     }
+
+
+    @Test
+    @DisplayName("Test actualizar cuenta - arroja error cuando la cuenta no se encuentra")
+    public void testUpdateAccountThrowsNotFoundExceptionWhenAccountNotFound() {
+        UUID accountId = account.getId();
+
+        given(accountRepository.findById(accountId)).willReturn(Optional.empty());
+
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            accountService.updateAccount(accountId, accountRequest);
+        });
+
+        assertEquals("no encontrado", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Test actualizar cuenta - arroja error por número de cuenta duplicado")
+    public void testUpdateAccountThrowsErrorWhenAccountNumberIsDuplicate() {
+        UUID accountId = account.getId();
+        accountRequest.setNumeroCuenta("654329");
+        account.setNumeroCuenta("654328");
+        given(accountRepository.findById(accountId)).willReturn(Optional.of(account));
+        given(accountRepository.existsByNumeroCuenta(accountRequest.getNumeroCuenta())).willReturn(true);
+
+        BadPetitionException exception = assertThrows(BadPetitionException.class, () -> {
+            accountService.updateAccount(accountId, accountRequest);
+        });
+
+        assertEquals("El numero de cuenta debe ser única", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Test actualizar cuenta - no realiza cambios si los datos son iguales")
+    public void testUpdateAccountNoChangeWhenDataIsEqual() {
+        UUID accountId = account.getId();
+        accountRequest.setNumeroCuenta(account.getNumeroCuenta());
+        accountRequest.setSaldo(account.getSaldo());
+
+        given(accountRepository.findById(accountId)).willReturn(Optional.of(account));
+        given(accountRepository.save(any(Account.class))).willReturn(account);
+
+        AccountResponse response = accountService.updateAccount(accountId, accountRequest);
+
+        assertNotNull(response);
+        assertEquals(account.getSaldo(), response.getSaldo());
+    }
+
 
     @Test
     @DisplayName("Test eliminar cuenta con saldo positivo - debería lanzar excepción")
@@ -152,6 +229,7 @@ public class AccountServiceImplTest {
 
         assertThrows(BadPetitionException.class, () -> accountService.deleteAccount(account.getId()));
     }
+
 
     @Test
     @DisplayName("Test eliminar cuenta con saldo negativo - debería lanzar excepción")
@@ -272,13 +350,86 @@ public class AccountServiceImplTest {
         moneyTransfer.setIdCuentaDestino(UUID.randomUUID());
 
         Account accountDestination = createDestinationAccount(moneyTransfer);
-        prepareTransferMocks(moneyTransfer, accountDestination);
+        given(accountRepository.findById(account.getId())).willReturn(Optional.of(account));
+        given(accountRepository.findById(moneyTransfer.getIdCuentaDestino())).willReturn(Optional.of(accountDestination));
+
+        Money money = new Money();
+        money.setDinero(moneyTransfer.getDinero());
+
+        given(transactionClient.registerTransferTransaction(any(Money.class),
+                                                            eq(accountDestination.getNumeroCuenta()),
+                                                            eq(account.getNumeroCuenta()))).willReturn(new TransactionResponse());
 
         ModelApiResponse response = accountService.transferMoneyBetweenAccounts(account.getId(), moneyTransfer);
         assertNotNull(response);
         assertTrue(response.getMessage().contains("Operación exitosa"));
         assertEquals(150.0, account.getSaldo(), 0.001);
         assertEquals(50.0, accountDestination.getSaldo(), 0.001);
+    }
+
+    @Test
+    @DisplayName("Test transferir dinero entre cuentas - Arroja error si el dinero a transferir es 0")
+    public void testTransferMoneyBetweenAccountsWithZeroAmount() {
+
+        MoneyTransfer moneyTransfer = new MoneyTransfer();
+        moneyTransfer.setDinero(0.0);
+        moneyTransfer.setIdCuentaDestino(UUID.randomUUID());
+
+        assertThrows(BadPetitionException.class,
+                     () -> accountService.transferMoneyBetweenAccounts(account.getId(), moneyTransfer));
+    }
+
+    @Test
+    @DisplayName("Test transferir dinero entre cuentas - Arroja error si cuenta de origen tiene saldo es menor a 0")
+    public void testTransferMoneyBetweenAccountsWithInsufficientBalance() {
+        account.setSaldo(200.0);
+
+        MoneyTransfer moneyTransfer = new MoneyTransfer();
+        moneyTransfer.setDinero(800.0);
+        moneyTransfer.setIdCuentaDestino(UUID.randomUUID());
+
+        Account accountDestination = createDestinationAccount(moneyTransfer);
+        given(accountRepository.findById(account.getId())).willReturn(Optional.of(account));
+        given(accountRepository.findById(moneyTransfer.getIdCuentaDestino())).willReturn(Optional.of(accountDestination));
+
+        Money money = new Money();
+        money.setDinero(moneyTransfer.getDinero());
+        assertThrows(BadPetitionException.class,
+                     () -> accountService.transferMoneyBetweenAccounts(account.getId(), moneyTransfer));
+    }
+
+    @Test
+    @DisplayName("Test transferir dinero entre cuentas - Arroja error si cuenta de origen invalido")
+    public void testTransferMoneyBetweenAccountsWithInvalidAccountOrigin() {
+        account.setSaldo(200.0);
+
+        MoneyTransfer moneyTransfer = new MoneyTransfer();
+        moneyTransfer.setDinero(100.0);
+        moneyTransfer.setIdCuentaDestino(UUID.randomUUID());
+
+        given(accountRepository.findById(account.getId())).willReturn(Optional.empty());
+        Money money = new Money();
+        money.setDinero(moneyTransfer.getDinero());
+        assertThrows(NotFoundException.class,
+                     () -> accountService.transferMoneyBetweenAccounts(account.getId(), moneyTransfer));
+    }
+
+    @Test
+    @DisplayName("Test transferir dinero entre cuentas - Arroja error si cuenta de destino invalido")
+    public void testTransferMoneyBetweenAccountsWithInvalidAccountDestination() {
+        account.setSaldo(200.0);
+
+        MoneyTransfer moneyTransfer = new MoneyTransfer();
+        moneyTransfer.setDinero(100.0);
+        moneyTransfer.setIdCuentaDestino(UUID.randomUUID());
+
+        given(accountRepository.findById(account.getId())).willReturn(Optional.of(account));
+        given(accountRepository.findById(moneyTransfer.getIdCuentaDestino())).willReturn(Optional.empty());
+
+        Money money = new Money();
+        money.setDinero(moneyTransfer.getDinero());
+        assertThrows(NotFoundException.class,
+                     () -> accountService.transferMoneyBetweenAccounts(account.getId(), moneyTransfer));
     }
 
     private AccountRequest createAccountRequest() {
@@ -316,18 +467,5 @@ public class AccountServiceImplTest {
         acc.setNumeroCuenta("654321");
         return acc;
     }
-
-    private void prepareTransferMocks(MoneyTransfer moneyTransfer, Account accountDestination) {
-        given(accountRepository.findById(account.getId())).willReturn(Optional.of(account));
-        given(accountRepository.findById(moneyTransfer.getIdCuentaDestino())).willReturn(Optional.of(accountDestination));
-
-        Money money = new Money();
-        money.setDinero(moneyTransfer.getDinero());
-
-        given(transactionClient.registerTransferTransaction(any(Money.class),
-                                                            eq(accountDestination.getNumeroCuenta()),
-                                                            eq(account.getNumeroCuenta()))).willReturn(new TransactionResponse());
-    }
-
 
 }
